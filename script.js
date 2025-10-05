@@ -218,114 +218,70 @@ function createScrollProgress() {
 // Initialize scroll progress
 createScrollProgress();
 
-// Gallery Toggle Functionality with Lazy Loading
+// Load More gallery in small batches without data-src
 document.addEventListener('DOMContentLoaded', function () {
-    const galleryToggle = document.getElementById('galleryToggle');
     const extendedGallery = document.getElementById('extendedGallery');
-    const toggleText = document.querySelector('.toggle-text');
-    const toggleIcon = document.querySelector('.toggle-icon');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const toggleText = loadMoreBtn ? loadMoreBtn.querySelector('.toggle-text') : null;
+    const toggleIcon = loadMoreBtn ? loadMoreBtn.querySelector('.toggle-icon') : null;
 
-    if (galleryToggle && extendedGallery) {
-        let isExpanded = false;
-        let isLoaded = false;
+    if (!extendedGallery || !loadMoreBtn) return;
 
-        // Lazy load images function with batch processing
-        function lazyLoadImages() {
-            if (isLoaded) return;
+    // Predefined list of extra photo filenames
+    const extraPhotos = [
+        10,11,12,13,14,15,16,17,18,19,
+        20,21,22,23,24,25,26,27,28,29,
+        30,31,32,33,34,35,36,37,38,39,
+        41,42,44,45,46,47,48,50,51,52,
+        53,54,55,56
+    ].map(n => `photo/${n}.jpeg`);
 
-            const images = extendedGallery.querySelectorAll('img[data-src]');
-            const totalImages = images.length;
+    let nextIndex = 0;
+    const batchSize = 6; // render 6 per click
 
-            if (totalImages === 0) {
-                isLoaded = true;
-                toggleText.textContent = '사진 접기';
-                toggleIcon.className = 'fas fa-chevron-up toggle-icon';
-                return;
-            }
+    function createItem(src) {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
 
-            // Show loading indicator
-            toggleText.textContent = '사진 로딩 중...';
-            toggleIcon.className = 'fas fa-spinner fa-spin toggle-icon';
+        const img = document.createElement('img');
+        img.className = 'gallery-photo';
+        img.src = src; // no data-src; browser handles scheduling
 
-            let loadedCount = 0;
-            let currentBatch = 0;
-            const batchSize = 5; // Load 5 images at a time
-            const batchDelay = 200; // 200ms delay between batches
+        const cap = document.createElement('div');
+        cap.className = 'gallery-caption';
+        cap.textContent = '예원이의 소중한 순간';
 
-            function loadBatch() {
-                const startIndex = currentBatch * batchSize;
-                const endIndex = Math.min(startIndex + batchSize, totalImages);
-
-                for (let i = startIndex; i < endIndex; i++) {
-                    const img = images[i];
-                    if (img && img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-
-                        img.onload = function () {
-                            loadedCount++;
-                            updateProgress();
-                        };
-
-                        img.onerror = function () {
-                            console.warn('Failed to load image:', img.src);
-                            loadedCount++;
-                            updateProgress();
-                        };
-                    } else {
-                        loadedCount++;
-                        updateProgress();
-                    }
-                }
-
-                currentBatch++;
-
-                if (endIndex < totalImages) {
-                    // Load next batch after delay
-                    setTimeout(loadBatch, batchDelay);
-                }
-            }
-
-            function updateProgress() {
-                if (loadedCount === totalImages) {
-                    isLoaded = true;
-                    toggleText.textContent = '사진 접기';
-                    toggleIcon.className = 'fas fa-chevron-up toggle-icon';
-                } else {
-                    // Update progress
-                    const progress = Math.round((loadedCount / totalImages) * 100);
-                    toggleText.textContent = `사진 로딩 중... ${progress}%`;
-                }
-            }
-
-            // Start loading first batch
-            loadBatch();
-        }
-
-        galleryToggle.addEventListener('click', function () {
-            if (isExpanded) {
-                // Collapse
-                extendedGallery.style.display = 'none';
-                toggleText.textContent = '더 많은 사진 보기';
-                toggleIcon.className = 'fas fa-chevron-down toggle-icon';
-                galleryToggle.classList.remove('expanded');
-                isExpanded = false;
-            } else {
-                // Expand
-                extendedGallery.style.display = 'grid';
-                galleryToggle.classList.add('expanded');
-                isExpanded = true;
-
-                // Lazy load images if not already loaded
-                if (!isLoaded) {
-                    lazyLoadImages();
-                } else {
-                    toggleText.textContent = '사진 접기';
-                    toggleIcon.className = 'fas fa-chevron-up toggle-icon';
-                }
-            }
-        });
+        item.appendChild(img);
+        item.appendChild(cap);
+        return item;
     }
+
+    function appendBatch() {
+        const end = Math.min(nextIndex + batchSize, extraPhotos.length);
+        for (let i = nextIndex; i < end; i++) {
+            extendedGallery.appendChild(createItem(extraPhotos[i]));
+        }
+        nextIndex = end;
+
+        if (nextIndex >= extraPhotos.length) {
+            toggleText.textContent = '모든 사진을 다 봤어요';
+            toggleIcon.className = 'fas fa-check toggle-icon';
+            loadMoreBtn.disabled = true;
+        }
+    }
+
+    // Initial render (optional: keep empty until click)
+    // appendBatch();
+
+    loadMoreBtn.addEventListener('click', function () {
+        toggleIcon.className = 'fas fa-spinner fa-spin toggle-icon';
+        setTimeout(() => {
+            appendBatch();
+            toggleIcon.className = nextIndex >= extraPhotos.length
+                ? 'fas fa-check toggle-icon'
+                : 'fas fa-chevron-down toggle-icon';
+        }, 100);
+    });
 });
 
 // Simple Music Control (no auto-play)
