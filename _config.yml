@@ -1,0 +1,36 @@
+# Jekyll configuration for GitHub Pages
+title: "예원이의 첫 생일 초대장"
+description: "예원이의 첫 생일 파티 초대장"
+author: "김상수, 최효실"
+email: ""
+
+# GitHub Pages settings
+baseurl: "/yw-first-birthday"
+url: "https://kimsangsoo.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Collections
+collections:
+  - photo
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# Exclude from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .gitignore
