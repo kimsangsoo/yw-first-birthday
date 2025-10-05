@@ -925,6 +925,10 @@ body.modal-open .extended-gallery {
     align-items: center;
 }
 
+.photo-modal[style*="display: flex"] {
+    display: flex !important;
+}
+
 .modal-overlay {
     position: absolute;
     top: 0;

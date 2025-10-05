@@ -360,14 +360,24 @@ document.addEventListener('DOMContentLoaded', function () {
 let isModalOpen = false;
 let isOpeningModal = false;
 function openPhotoModal(imageSrc, caption) {
-    // 최적화된 이미지용 안전한 모달
-    if (isModalOpen || !imageSrc) return;
+    // 디버깅을 위한 콘솔 로그
+    console.log('openPhotoModal called:', imageSrc, caption);
+    
+    if (isModalOpen || !imageSrc) {
+        console.log('Modal already open or no image src');
+        return;
+    }
     
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
 
-    if (!modal || !modalImage || !modalCaption) return;
+    console.log('Modal elements:', modal, modalImage, modalCaption);
+
+    if (!modal || !modalImage || !modalCaption) {
+        console.log('Modal elements not found');
+        return;
+    }
 
     // 최적화된 이미지로 안전하게 모달 열기
     modalImage.src = imageSrc;
@@ -375,12 +385,14 @@ function openPhotoModal(imageSrc, caption) {
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     isModalOpen = true;
+    
+    console.log('Modal opened successfully');
 }
 
 function closePhotoModal() {
     // 최적화된 이미지용 안전한 닫기
     if (!isModalOpen) return;
-    
+
     const modal = document.getElementById('photoModal');
     if (modal) {
         modal.style.display = 'none';
@@ -412,14 +424,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 최적화된 이미지용 모달 (안전한 클릭)
         galleryContainer.addEventListener('click', function (e) {
-            if (isModalOpen) return;
+            console.log('Gallery clicked:', e.target);
+            
+            if (isModalOpen) {
+                console.log('Modal already open');
+                return;
+            }
+            
             const galleryItem = e.target.closest('.gallery-item');
+            console.log('Gallery item:', galleryItem);
+            
             if (!galleryItem) return;
 
             const img = galleryItem.querySelector('img');
             const caption = galleryItem.querySelector('.gallery-caption');
 
-            if (!img || !img.src) return;
+            console.log('Image and caption:', img, caption);
+
+            if (!img || !img.src) {
+                console.log('No image or src found');
+                return;
+            }
 
             // 최적화된 이미지로 안전한 모달 열기
             openPhotoModal(img.src, caption ? caption.textContent : '');
