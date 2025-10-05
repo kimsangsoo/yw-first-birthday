@@ -250,12 +250,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // Auto-play on page load with multiple attempts
         let retryCount = 0;
         const maxRetries = 10;
-        
+
         function tryAutoPlay() {
             if (isPlaying) return; // Already playing
-            
+
             console.log('Attempting to play music, attempt:', retryCount + 1);
-            
+
             backgroundMusic.play().then(() => {
                 musicToggle.classList.add('playing');
                 musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }).catch(error => {
                 console.log('Auto-play failed:', error);
                 retryCount++;
-                
+
                 if (retryCount < maxRetries) {
                     console.log('Retrying in 500ms...');
                     setTimeout(tryAutoPlay, 500);
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('scroll', handleUserInteraction);
         document.addEventListener('keydown', handleUserInteraction);
         document.addEventListener('mousemove', handleUserInteraction);
-        
+
         // Also try on window focus
         window.addEventListener('focus', handleUserInteraction);
 
