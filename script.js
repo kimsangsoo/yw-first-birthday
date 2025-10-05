@@ -398,18 +398,23 @@ function openPhotoModal(imageSrc, caption) {
         modalContent.style.pointerEvents = 'auto';
     }
 
-    // 모달 강제 표시 - 최종 해결책
+    // 모달 강제 표시 - 화면 중앙 고정
     modal.style.display = 'flex';
     modal.style.opacity = '1';
     modal.style.visibility = 'visible';
     modal.style.zIndex = '999999';
     modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
+    modal.style.top = '0px';
+    modal.style.left = '0px';
+    modal.style.right = '0px';
+    modal.style.bottom = '0px';
     modal.style.width = '100vw';
     modal.style.height = '100vh';
     modal.style.background = 'rgba(0, 0, 0, 0.95)';
     modal.style.pointerEvents = 'auto';
+    modal.style.margin = '0';
+    modal.style.padding = '0';
+    modal.style.transform = 'translateZ(0)';
     modal.classList.add('show');
 
     // body 스크롤 차단 (position: fixed 제거)
