@@ -97,16 +97,16 @@ document.querySelectorAll('.gallery-item').forEach(el => {
 
 
 
-// Add parallax effect to main section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const parallax = document.querySelector('.main-section');
-    const speed = scrolled * 0.5;
+// Add parallax effect to main section (disabled to prevent screen shaking)
+// window.addEventListener('scroll', () => {
+//     const scrolled = window.pageYOffset;
+//     const parallax = document.querySelector('.main-section');
+//     const speed = scrolled * 0.5;
 
-    if (parallax) {
-        parallax.style.transform = `translateY(${speed}px)`;
-    }
-});
+//     if (parallax) {
+//         parallax.style.transform = `translateY(${speed}px)`;
+//     }
+// });
 
 // Map functionality with iframe
 document.addEventListener('DOMContentLoaded', function () {
@@ -380,11 +380,11 @@ function openPhotoModal(imageSrc, caption) {
 function closePhotoModal() {
     const modal = document.getElementById('photoModal');
     if (!modal) return;
-    
+
     // Prevent multiple calls
     if (modal.classList.contains('closing')) return;
     modal.classList.add('closing');
-    
+
     modal.classList.remove('active');
 
     // Restore scrolling on iOS
