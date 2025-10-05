@@ -404,77 +404,57 @@ function openPhotoModal(imageSrc, caption) {
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
 
-    if (modal && modalImage && modalCaption) {
-        // Prevent multiple calls
-        if (modal.classList.contains('opening')) return;
-        modal.classList.add('opening');
+    if (!modal || !modalImage || !modalCaption) return;
 
-        // Save current scroll position
+    // Simple and safe modal opening
+    try {
+        // Save scroll position
         scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-
-        // Show modal immediately with loading state
+        
+        // Set content
+        modalImage.src = imageSrc;
+        modalCaption.textContent = caption;
+        
+        // Show modal
         modal.style.display = 'flex';
-        modalImage.src = ''; // Clear previous image
-        modalCaption.textContent = '로딩 중...';
-
-        // Prevent background scrolling on iOS
+        
+        // Prevent background scroll
         document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollPosition}px`;
-        document.body.style.width = '100%';
-
-        // Load image asynchronously
-        const img = new Image();
-        img.onload = function () {
-            // Use requestAnimationFrame for smooth transition
-            requestAnimationFrame(() => {
-                modalImage.src = imageSrc;
-                modalCaption.textContent = caption;
-                modal.classList.remove('opening');
-
-                // Add animation class
-                setTimeout(() => {
-                    modal.classList.add('active');
-                }, 10);
-            });
-        };
-
-        img.onerror = function () {
-            modalCaption.textContent = '이미지 로딩 실패';
-            modal.classList.remove('opening');
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
-        };
-
-        img.src = imageSrc;
+        
+        // Add active class after a short delay
+        setTimeout(() => {
+            modal.classList.add('active');
+        }, 50);
+        
+    } catch (error) {
+        console.error('Error opening modal:', error);
     }
 }
 
 function closePhotoModal() {
     const modal = document.getElementById('photoModal');
     if (!modal) return;
-
-    // Prevent multiple calls
-    if (modal.classList.contains('closing')) return;
-    modal.classList.add('closing');
-
-    modal.classList.remove('active');
-
-    // Restore scrolling on iOS
-    document.body.style.overflow = 'auto';
-    document.body.style.position = 'static';
-    document.body.style.top = 'auto';
-    document.body.style.width = 'auto';
-
-    // Restore scroll position
-    window.scrollTo(0, scrollPosition);
-
-    // Hide modal after animation
-    setTimeout(() => {
-        modal.style.display = 'none';
-        modal.classList.remove('closing');
-    }, 300);
+    
+    try {
+        // Remove active class
+        modal.classList.remove('active');
+        
+        // Hide modal after animation
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+        
+        // Restore scrolling
+        document.body.style.overflow = 'auto';
+        
+        // Restore scroll position
+        if (scrollPosition !== undefined) {
+            window.scrollTo(0, scrollPosition);
+        }
+        
+    } catch (error) {
+        console.error('Error closing modal:', error);
+    }
 }
 
 // Close modal with Escape key
@@ -525,14 +505,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const img = this.querySelector('img');
                 const caption = this.querySelector('.gallery-caption');
                 if (img && caption) {
-                    // Use requestAnimationFrame for smooth operation
-                    requestAnimationFrame(() => {
-                        try {
-                            openPhotoModal(img.src, caption.textContent);
-                        } catch (error) {
-                            console.error('Error opening photo modal:', error);
-                        }
-                    });
+                    // Simple direct call
+                    openPhotoModal(img.src, caption.textContent);
                 }
             }
         }, { passive: false });
@@ -544,14 +518,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const img = this.querySelector('img');
             const caption = this.querySelector('.gallery-caption');
             if (img && caption) {
-                // Use requestAnimationFrame for smooth operation
-                requestAnimationFrame(() => {
-                    try {
-                        openPhotoModal(img.src, caption.textContent);
-                    } catch (error) {
-                        console.error('Error opening photo modal:', error);
-                    }
-                });
+                // Simple direct call
+                openPhotoModal(img.src, caption.textContent);
             }
         });
     });
