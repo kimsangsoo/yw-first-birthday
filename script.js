@@ -291,28 +291,36 @@ document.addEventListener('DOMContentLoaded', function () {
     function createGalleryItem(photo) {
         const item = document.createElement('div');
         item.className = 'gallery-item';
-        
+
         const img = document.createElement('img');
         img.className = 'gallery-photo';
-        
+
         // 이미지 최적화 설정
         img.setAttribute('loading', 'lazy');
         img.setAttribute('decoding', 'async');
         img.setAttribute('fetchpriority', 'low');
-        
-        // 썸네일용 작은 해상도 설정 (CSS로 크기 제한)
-        img.style.maxWidth = '300px';
-        img.style.maxHeight = '300px';
+
+        // 썸네일용 작은 해상도 설정 (더 작게)
+        img.style.maxWidth = '200px';
+        img.style.maxHeight = '200px';
         img.style.objectFit = 'cover';
+        img.style.borderRadius = '8px';
         
+        // 이미지 로딩 최적화
+        img.style.transition = 'transform 0.2s ease';
+        img.addEventListener('load', () => {
+            img.style.opacity = '1';
+        });
+        img.style.opacity = '0.7';
+
         // 원본 이미지 경로 (모달에서 사용)
         img.dataset.originalSrc = photo.src;
         img.src = photo.src;
-        
+
         const caption = document.createElement('div');
         caption.className = 'gallery-caption';
         caption.textContent = photo.caption;
-        
+
         item.appendChild(img);
         item.appendChild(caption);
         return item;
@@ -402,9 +410,36 @@ function openPhotoModal(imageSrc, caption) {
 
     if (modal && modalImage && modalCaption) {
         isOpeningModal = true;
-        // Hint the browser for smoother decode
+        
+        // 모달 이미지 최적화 설정
         modalImage.setAttribute('decoding', 'async');
         modalImage.setAttribute('loading', 'eager');
+        modalImage.style.maxWidth = '90vw';
+        modalImage.style.maxHeight = '70vh';
+        modalImage.style.objectFit = 'contain';
+        
+        // 로딩 상태 표시
+        modalImage.style.opacity = '0.5';
+        modalImage.style.filter = 'blur(2px)';
+        
+        // 이미지 로드 완료 후 처리
+        const handleImageLoad = () => {
+            modalImage.style.opacity = '1';
+            modalImage.style.filter = 'none';
+            modalImage.removeEventListener('load', handleImageLoad);
+            modalImage.removeEventListener('error', handleImageError);
+        };
+        
+        const handleImageError = () => {
+            modalImage.style.opacity = '1';
+            modalImage.style.filter = 'none';
+            console.warn('Failed to load image:', imageSrc);
+            modalImage.removeEventListener('load', handleImageLoad);
+            modalImage.removeEventListener('error', handleImageError);
+        };
+        
+        modalImage.addEventListener('load', handleImageLoad);
+        modalImage.addEventListener('error', handleImageError);
 
         // Defer to next frame to avoid jank on click
         requestAnimationFrame(() => {

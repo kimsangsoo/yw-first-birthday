@@ -604,15 +604,18 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
     flex: 1;
     /* 이미지 최적화 */
     image-rendering: auto;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    /* 썸네일용 크기 제한 */
-    max-width: 300px;
-    max-height: 300px;
+    /* 썸네일용 크기 제한 (더 작게) */
+    max-width: 200px;
+    max-height: 200px;
+    /* 큰 이미지 로딩 최적화 */
+    contain: layout style paint;
+    will-change: auto;
 }
 
 .gallery-item:hover .gallery-photo {
@@ -984,6 +987,7 @@ body.modal-open .extended-gallery {
     width: 100%;
     height: auto;
     max-height: 70vh;
+    max-width: 90vw;
     object-fit: contain;
     display: block;
     image-rendering: auto;
@@ -991,6 +995,9 @@ body.modal-open .extended-gallery {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     will-change: transform;
+    /* 큰 이미지 로딩 최적화 */
+    transition: opacity 0.3s ease, filter 0.3s ease;
+    contain: layout style paint;
 }
 
 .modal-caption {
