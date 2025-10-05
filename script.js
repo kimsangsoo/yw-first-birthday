@@ -362,7 +362,7 @@ let isOpeningModal = false;
 function openPhotoModal(imageSrc, caption) {
     // 극도로 단순화된 모달 (브라우저 멈춤 방지)
     if (isModalOpen || !imageSrc) return;
-    
+
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
@@ -380,7 +380,7 @@ function openPhotoModal(imageSrc, caption) {
 function closePhotoModal() {
     // 극도로 단순화된 닫기 (브라우저 멈춤 방지)
     if (!isModalOpen) return;
-    
+
     const modal = document.getElementById('photoModal');
     if (modal) {
         modal.style.display = 'none';
@@ -410,38 +410,14 @@ document.addEventListener('DOMContentLoaded', function () {
             el.removeAttribute('onclick');
         });
 
-        // 극도로 단순화된 갤러리 클릭 (브라우저 멈춤 방지)
+        // 모달 완전 제거 (브라우저 멈춤 방지)
         galleryContainer.addEventListener('click', function (e) {
-            if (isModalOpen) return;
-            const galleryItem = e.target.closest('.gallery-item');
-            if (!galleryItem) return;
-
-            const img = galleryItem.querySelector('img');
-            const caption = galleryItem.querySelector('.gallery-caption');
-
-            if (!img || !img.src) return;
-
-            // 즉시 모달 열기 (복잡한 로직 제거)
-            openPhotoModal(img.src, caption ? caption.textContent : '');
+            // 클릭 이벤트 무시 (모달 사용 안함)
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
         });
     }
 
-    // Bind modal overlay and close button directly
-    const modal = document.getElementById('photoModal');
-    if (modal) {
-        const overlay = modal.querySelector('.modal-overlay');
-        const closeBtn = modal.querySelector('.modal-close');
-        if (overlay) {
-            overlay.addEventListener('click', function (e) {
-                e.stopPropagation();
-                closePhotoModal();
-            });
-        }
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                closePhotoModal();
-            });
-        }
-    }
+    // 모달 관련 코드 완전 제거 (브라우저 멈춤 방지)
 });
