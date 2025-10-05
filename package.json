@@ -1,0 +1,29 @@
+{
+  "name": "yw-first-birthday",
+  "version": "1.0.0",
+  "description": "해섬이의 첫 생일 초대장 웹사이트",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "echo 'Deploy to GitHub Pages'"
+  },
+  "keywords": [
+    "birthday",
+    "invitation",
+    "korean",
+    "baby",
+    "first-birthday",
+    "doljanchi"
+  ],
+  "author": "해섬이 가족",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/[username]/yw-first-birthday.git"
+  },
+  "homepage": "https://[username].github.io/yw-first-birthday",
+  "devDependencies": {},
+  "dependencies": {}
+}
