@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예원이의 소중한 순간들 - 전체 갤러리</title>
+    <link rel="stylesheet" href="styles.css?v=1.1">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Hi+Melody&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <section class="photo-gallery">
+        <div class="gallery-container">
+            <h2 class="gallery-title">예원이의 소중한 순간들</h2>
+            <div id="virtualGallery" class="gallery-grid"></div>
+            <div id="loader" class="gallery-toggle" style="margin-top: 1rem;">
+                <button class="toggle-btn" type="button" disabled>
+                    <span class="toggle-text">로딩 중...</span>
+                    <i class="fas fa-spinner fa-spin toggle-icon"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Modal (reused) -->
+    <div id="photoModal" class="photo-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" type="button">&times;</button>
+            <img id="modalImage" src="" alt="" class="modal-image">
+            <div class="modal-caption" id="modalCaption"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

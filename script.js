@@ -218,70 +218,77 @@ function createScrollProgress() {
 // Initialize scroll progress
 createScrollProgress();
 
-// Load More gallery in small batches without data-src
+// Virtualized/infinite gallery for gallery.html
 document.addEventListener('DOMContentLoaded', function () {
-    const extendedGallery = document.getElementById('extendedGallery');
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-    const toggleText = loadMoreBtn ? loadMoreBtn.querySelector('.toggle-text') : null;
-    const toggleIcon = loadMoreBtn ? loadMoreBtn.querySelector('.toggle-icon') : null;
+    const virtualGallery = document.getElementById('virtualGallery');
+    const loader = document.getElementById('loader');
 
-    if (!extendedGallery || !loadMoreBtn) return;
+    if (!virtualGallery) return; // only runs on gallery.html
 
-    // Predefined list of extra photo filenames
-    const extraPhotos = [
-        10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-        20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-        30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
-        41, 42, 44, 45, 46, 47, 48, 50, 51, 52,
-        53, 54, 55, 56
-    ].map(n => `photo/${n}.jpeg`);
+    const photos = [
+        1,2,3,4,5,6,7,8,9,
+        10,11,12,13,14,15,16,17,18,19,
+        20,21,22,23,24,25,26,27,28,29,
+        30,31,32,33,34,35,36,37,38,39,
+        41,42,44,45,46,47,48,50,51,52,
+        53,54,55,56
+    ].map(n => `photo/${n}${n <= 9 ? (n === 9 ? '.JPG' : '.jpg') : '.jpeg'}`);
 
-    let nextIndex = 0;
-    const batchSize = 6; // render 6 per click
+    const WINDOW_CAP = 48; // keep DOM nodes bounded
+    const BATCH = 12; // items per chunk
+    let cursor = 0;
+    let loading = false;
 
     function createItem(src) {
         const item = document.createElement('div');
         item.className = 'gallery-item';
-
         const img = document.createElement('img');
         img.className = 'gallery-photo';
-        img.src = src; // no data-src; browser handles scheduling
-
+        img.src = src;
         const cap = document.createElement('div');
         cap.className = 'gallery-caption';
         cap.textContent = '예원이의 소중한 순간';
-
         item.appendChild(img);
         item.appendChild(cap);
         return item;
     }
 
-    function appendBatch() {
-        const end = Math.min(nextIndex + batchSize, extraPhotos.length);
-        for (let i = nextIndex; i < end; i++) {
-            extendedGallery.appendChild(createItem(extraPhotos[i]));
-        }
-        nextIndex = end;
-
-        if (nextIndex >= extraPhotos.length) {
-            toggleText.textContent = '모든 사진을 다 봤어요';
-            toggleIcon.className = 'fas fa-check toggle-icon';
-            loadMoreBtn.disabled = true;
+    function pruneIfNeeded() {
+        while (virtualGallery.children.length > WINDOW_CAP) {
+            virtualGallery.removeChild(virtualGallery.firstChild);
         }
     }
 
-    // Initial render (optional: keep empty until click)
-    // appendBatch();
+    function appendNextBatch() {
+        if (loading) return;
+        loading = true;
+        if (loader) loader.style.display = 'block';
 
-    loadMoreBtn.addEventListener('click', function () {
-        toggleIcon.className = 'fas fa-spinner fa-spin toggle-icon';
-        setTimeout(() => {
-            appendBatch();
-            toggleIcon.className = nextIndex >= extraPhotos.length
-                ? 'fas fa-check toggle-icon'
-                : 'fas fa-chevron-down toggle-icon';
-        }, 100);
-    });
+        const end = Math.min(cursor + BATCH, photos.length);
+        const frag = document.createDocumentFragment();
+        for (let i = cursor; i < end; i++) {
+            frag.appendChild(createItem(photos[i]));
+        }
+        cursor = end;
+        virtualGallery.appendChild(frag);
+        pruneIfNeeded();
+
+        if (loader) loader.style.display = cursor >= photos.length ? 'none' : 'block';
+        loading = false;
+    }
+
+    // initial
+    appendNextBatch();
+
+    // infinite scroll using IntersectionObserver on loader
+    if (loader) {
+        const io = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                if (e.isIntersecting) appendNextBatch();
+            }
+        }, { rootMargin: '200px 0px' });
+        io.observe(loader);
+    }
 });
 
 // Simple Music Control (no auto-play)
