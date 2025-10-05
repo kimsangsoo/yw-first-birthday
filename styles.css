@@ -98,7 +98,7 @@ body {
 /* Main Section */
 .main-section {
     min-height: 100vh;
-    background: url("photo/back.png") center/cover no-repeat;
+    background: url("photo/back.jpg") center/cover no-repeat;
     background-attachment: scroll;
     display: flex;
     align-items: center;
