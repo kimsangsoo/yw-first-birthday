@@ -357,79 +357,97 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Simple Photo Modal
+// Photo Modal - 완전 재작성
 let isModalOpen = false;
-let isOpeningModal = false;
-function openPhotoModal(imageSrc, caption) {
-    // 디버깅을 위한 콘솔 로그
-    console.log('openPhotoModal called:', imageSrc, caption);
 
-    if (isModalOpen || !imageSrc) {
-        console.log('Modal already open or no image src');
+function openPhotoModal(imageSrc, caption) {
+    console.log('=== MODAL OPEN START ===');
+    console.log('Image src:', imageSrc);
+    console.log('Caption:', caption);
+    
+    if (isModalOpen) {
+        console.log('Modal already open, ignoring');
+        return;
+    }
+    
+    if (!imageSrc) {
+        console.log('No image src provided');
         return;
     }
 
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
-
-    console.log('Modal elements:', modal, modalImage, modalCaption);
-
+    
     if (!modal || !modalImage || !modalCaption) {
-        console.log('Modal elements not found');
+        console.log('Modal elements not found:', { modal, modalImage, modalCaption });
         return;
     }
 
-    // 최적화된 이미지로 안전하게 모달 열기
+    // 이미지 설정
     modalImage.src = imageSrc;
+    modalImage.alt = caption || '';
     modalCaption.textContent = caption || '';
     
-    // 모달 표시 - 여러 방법으로 확실하게
+    // 모달 강제 표시
     modal.style.display = 'flex';
     modal.style.opacity = '1';
     modal.style.visibility = 'visible';
+    modal.style.zIndex = '99999';
     modal.classList.add('show');
     
-    // body 스크롤 방지
+    // body 스크롤 완전 차단
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
+    document.body.style.top = '0';
+    document.body.style.left = '0';
     document.body.style.width = '100%';
+    document.body.style.height = '100%';
     
     isModalOpen = true;
-
-    console.log('Modal opened successfully');
     
-    // 추가 디버깅: 모달 상태 확인
-    setTimeout(() => {
-        console.log('Modal after 100ms:', {
-            display: modal.style.display,
-            opacity: modal.style.opacity,
-            visibility: modal.style.visibility,
-            classList: modal.classList.toString(),
-            computedStyle: window.getComputedStyle(modal).display
-        });
-    }, 100);
+    console.log('Modal opened successfully');
+    console.log('Modal styles:', {
+        display: modal.style.display,
+        opacity: modal.style.opacity,
+        visibility: modal.style.visibility,
+        zIndex: modal.style.zIndex,
+        classList: modal.classList.toString()
+    });
 }
 
 function closePhotoModal() {
-    // 최적화된 이미지용 안전한 닫기
-    if (!isModalOpen) return;
+    console.log('=== MODAL CLOSE START ===');
+    
+    if (!isModalOpen) {
+        console.log('Modal not open, ignoring');
+        return;
+    }
 
     const modal = document.getElementById('photoModal');
-    if (modal) {
-        // 모달 숨기기 - 여러 방법으로 확실하게
-        modal.style.display = 'none';
-        modal.style.opacity = '0';
-        modal.style.visibility = 'hidden';
-        modal.classList.remove('show');
-        
-        // body 스크롤 복원
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.width = '';
-        
-        isModalOpen = false;
+    if (!modal) {
+        console.log('Modal element not found');
+        return;
     }
+    
+    // 모달 완전 숨기기
+    modal.style.display = 'none';
+    modal.style.opacity = '0';
+    modal.style.visibility = 'hidden';
+    modal.style.zIndex = '';
+    modal.classList.remove('show');
+    
+    // body 스크롤 완전 복원
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.width = '';
+    document.body.style.height = '';
+    
+    isModalOpen = false;
+    
+    console.log('Modal closed successfully');
 }
 
 // Close modal with Escape key
@@ -453,51 +471,81 @@ document.addEventListener('DOMContentLoaded', function () {
             el.removeAttribute('onclick');
         });
 
-        // 최적화된 이미지용 모달 (안전한 클릭)
+        // 갤러리 클릭 이벤트 - 완전 재작성
         galleryContainer.addEventListener('click', function (e) {
-            console.log('Gallery clicked:', e.target);
-
+            console.log('=== GALLERY CLICK ===');
+            console.log('Clicked element:', e.target);
+            console.log('Modal open status:', isModalOpen);
+            
+            // 모달이 이미 열려있으면 무시
             if (isModalOpen) {
-                console.log('Modal already open');
+                console.log('Modal already open, ignoring click');
                 return;
             }
-
+            
+            // 갤러리 아이템 찾기
             const galleryItem = e.target.closest('.gallery-item');
-            console.log('Gallery item:', galleryItem);
-
-            if (!galleryItem) return;
-
+            console.log('Gallery item found:', galleryItem);
+            
+            if (!galleryItem) {
+                console.log('No gallery item found');
+                return;
+            }
+            
+            // 이미지와 캡션 찾기
             const img = galleryItem.querySelector('img');
             const caption = galleryItem.querySelector('.gallery-caption');
-
-            console.log('Image and caption:', img, caption);
-
+            console.log('Image element:', img);
+            console.log('Caption element:', caption);
+            
             if (!img || !img.src) {
                 console.log('No image or src found');
                 return;
             }
-
-            // 최적화된 이미지로 안전한 모달 열기
-            openPhotoModal(img.src, caption ? caption.textContent : '');
+            
+            const imageSrc = img.src;
+            const captionText = caption ? caption.textContent : '';
+            
+            console.log('Opening modal with:', { imageSrc, captionText });
+            openPhotoModal(imageSrc, captionText);
         });
     }
 
-    // 모달 이벤트 바인딩 (최적화된 이미지용)
+    // 모달 이벤트 바인딩 - 완전 재작성
     const modal = document.getElementById('photoModal');
     if (modal) {
+        console.log('Setting up modal event listeners');
+        
         const overlay = modal.querySelector('.modal-overlay');
         const closeBtn = modal.querySelector('.modal-close');
+        
+        console.log('Modal elements:', { overlay, closeBtn });
 
+        // 오버레이 클릭으로 모달 닫기
         if (overlay) {
             overlay.addEventListener('click', function (e) {
+                console.log('Overlay clicked');
+                e.preventDefault();
                 e.stopPropagation();
                 closePhotoModal();
             });
         }
+        
+        // 닫기 버튼 클릭으로 모달 닫기
         if (closeBtn) {
             closeBtn.addEventListener('click', function (e) {
+                console.log('Close button clicked');
+                e.preventDefault();
                 e.stopPropagation();
                 closePhotoModal();
+            });
+        }
+        
+        // 모달 컨텐츠 클릭은 이벤트 전파 방지
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.addEventListener('click', function (e) {
+                e.stopPropagation();
             });
         }
     }
