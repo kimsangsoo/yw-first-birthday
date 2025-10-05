@@ -685,6 +685,16 @@ section {
     content: "사진 접기";
 }
 
+/* Loading spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.toggle-icon.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
 /* Extended Gallery */
 .extended-gallery {
     margin-top: 2rem;

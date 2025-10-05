@@ -218,16 +218,57 @@ function createScrollProgress() {
 // Initialize scroll progress
 createScrollProgress();
 
-// Gallery Toggle Functionality
+// Gallery Toggle Functionality with Lazy Loading
 document.addEventListener('DOMContentLoaded', function () {
     const galleryToggle = document.getElementById('galleryToggle');
     const extendedGallery = document.getElementById('extendedGallery');
     const toggleText = document.querySelector('.toggle-text');
     const toggleIcon = document.querySelector('.toggle-icon');
-
+    
     if (galleryToggle && extendedGallery) {
         let isExpanded = false;
-
+        let isLoaded = false;
+        
+        // Lazy load images function
+        function lazyLoadImages() {
+            if (isLoaded) return;
+            
+            const images = extendedGallery.querySelectorAll('img[data-src]');
+            let loadedCount = 0;
+            const totalImages = images.length;
+            
+            // Show loading indicator
+            toggleText.textContent = '사진 로딩 중...';
+            toggleIcon.className = 'fas fa-spinner fa-spin toggle-icon';
+            
+            images.forEach((img, index) => {
+                // Load images in batches to prevent browser freeze
+                setTimeout(() => {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    
+                    img.onload = function() {
+                        loadedCount++;
+                        if (loadedCount === totalImages) {
+                            isLoaded = true;
+                            toggleText.textContent = '사진 접기';
+                            toggleIcon.className = 'fas fa-chevron-up toggle-icon';
+                        }
+                    };
+                    
+                    img.onerror = function() {
+                        console.warn('Failed to load image:', img.dataset.src);
+                        loadedCount++;
+                        if (loadedCount === totalImages) {
+                            isLoaded = true;
+                            toggleText.textContent = '사진 접기';
+                            toggleIcon.className = 'fas fa-chevron-up toggle-icon';
+                        }
+                    };
+                }, index * 50); // 50ms delay between each image load
+            });
+        }
+        
         galleryToggle.addEventListener('click', function () {
             if (isExpanded) {
                 // Collapse
@@ -239,10 +280,16 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 // Expand
                 extendedGallery.style.display = 'grid';
-                toggleText.textContent = '사진 접기';
-                toggleIcon.className = 'fas fa-chevron-up toggle-icon';
                 galleryToggle.classList.add('expanded');
                 isExpanded = true;
+                
+                // Lazy load images if not already loaded
+                if (!isLoaded) {
+                    lazyLoadImages();
+                } else {
+                    toggleText.textContent = '사진 접기';
+                    toggleIcon.className = 'fas fa-chevron-up toggle-icon';
+                }
             }
         });
     }
