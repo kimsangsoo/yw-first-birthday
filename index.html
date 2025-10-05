@@ -18,8 +18,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gamja+Flower&family=Hi+Melody&family=Single+Day&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- 지도는 iframe으로 표시 -->
+    
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="mus.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 </head>
 <body>
+
+    <!-- Music Control Button -->
+    <div class="music-control">
+        <button id="musicToggle" class="music-btn">
+            <i class="fas fa-music"></i>
+        </button>
+    </div>
 
     <!-- Main Section -->
     <section id="main" class="main-section">

@@ -218,6 +218,59 @@ function createScrollProgress() {
 // Initialize scroll progress
 createScrollProgress();
 
+// Background Music Control
+document.addEventListener('DOMContentLoaded', function() {
+    const musicToggle = document.getElementById('musicToggle');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    let isPlaying = false;
+
+    if (musicToggle && backgroundMusic) {
+        // Set initial volume
+        backgroundMusic.volume = 0.3;
+
+        musicToggle.addEventListener('click', function() {
+            if (isPlaying) {
+                backgroundMusic.pause();
+                musicToggle.classList.remove('playing');
+                musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+                isPlaying = false;
+            } else {
+                backgroundMusic.play().then(() => {
+                    musicToggle.classList.add('playing');
+                    musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                    isPlaying = true;
+                }).catch(error => {
+                    console.log('Audio play failed:', error);
+                    // Show user interaction required message
+                    alert('음악을 재생하려면 페이지를 클릭해주세요.');
+                });
+            }
+        });
+
+        // Auto-play on first user interaction
+        let hasInteracted = false;
+        document.addEventListener('click', function() {
+            if (!hasInteracted && !isPlaying) {
+                hasInteracted = true;
+                backgroundMusic.play().then(() => {
+                    musicToggle.classList.add('playing');
+                    musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                    isPlaying = true;
+                }).catch(error => {
+                    console.log('Auto-play failed:', error);
+                });
+            }
+        }, { once: true });
+
+        // Handle music end
+        backgroundMusic.addEventListener('ended', function() {
+            musicToggle.classList.remove('playing');
+            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+            isPlaying = false;
+        });
+    }
+});
+
 // Photo Modal functionality (iOS Safari optimized)
 let scrollPosition = 0;
 
