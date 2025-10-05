@@ -553,10 +553,33 @@ section {
 
 /* Event Info Section */
 .event-info-section {
-    margin-top: 3rem;
-    padding: 2rem 0;
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #f8f4ff 100%);
+    padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
+    margin-top: 0;
     width: 100%;
     display: block;
+}
+
+.event-info-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 182, 193, 0.1) 0%, transparent 70%);
+    animation: rotate 25s linear infinite;
+    z-index: 0;
+}
+
+.event-info-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
 }
 
 .event-info-card {
@@ -1180,13 +1203,16 @@ section {
     }
     
     .event-info-section {
-        margin-top: 2rem;
-        padding: 1rem 0;
+        padding: 3rem 0;
+    }
+    
+    .event-info-container {
+        padding: 0 1rem;
     }
     
     .event-info-card {
         padding: 2rem 1.5rem;
-        margin: 0 1rem;
+        margin: 0;
     }
     
     .event-info-title {
