@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
             function loadBatch() {
                 const startIndex = currentBatch * batchSize;
                 const endIndex = Math.min(startIndex + batchSize, totalImages);
-                
+
                 for (let i = startIndex; i < endIndex; i++) {
                     const img = images[i];
                     if (img && img.dataset.src) {
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 currentBatch++;
-                
+
                 if (endIndex < totalImages) {
                     // Load next batch after delay
                     setTimeout(loadBatch, batchDelay);
@@ -405,27 +405,48 @@ function openPhotoModal(imageSrc, caption) {
     const modalCaption = document.getElementById('modalCaption');
 
     if (modal && modalImage && modalCaption) {
+        // Prevent multiple calls
+        if (modal.classList.contains('opening')) return;
+        modal.classList.add('opening');
+
         // Save current scroll position
         scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
-        // Preload image to ensure it's ready
+        // Show modal immediately with loading state
+        modal.style.display = 'flex';
+        modalImage.src = ''; // Clear previous image
+        modalCaption.textContent = '로딩 중...';
+
+        // Prevent background scrolling on iOS
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosition}px`;
+        document.body.style.width = '100%';
+
+        // Load image asynchronously
         const img = new Image();
         img.onload = function () {
-            modalImage.src = imageSrc;
-            modalCaption.textContent = caption;
-            modal.style.display = 'flex';
-
-            // Prevent background scrolling on iOS
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${scrollPosition}px`;
-            document.body.style.width = '100%';
-
-            // Add animation class
+            // Use requestAnimationFrame for smooth transition
+            requestAnimationFrame(() => {
+                modalImage.src = imageSrc;
+                modalCaption.textContent = caption;
+                modal.classList.remove('opening');
+                
+                // Add animation class
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+            });
+        };
+        
+        img.onerror = function () {
+            modalCaption.textContent = '이미지 로딩 실패';
+            modal.classList.remove('opening');
             setTimeout(() => {
                 modal.classList.add('active');
             }, 10);
         };
+        
         img.src = imageSrc;
     }
 }
@@ -504,14 +525,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 const img = this.querySelector('img');
                 const caption = this.querySelector('.gallery-caption');
                 if (img && caption) {
-                    // Small delay to ensure touch events are processed
-                    setTimeout(() => {
+                    // Use requestAnimationFrame for smooth operation
+                    requestAnimationFrame(() => {
                         try {
                             openPhotoModal(img.src, caption.textContent);
                         } catch (error) {
                             console.error('Error opening photo modal:', error);
                         }
-                    }, 50);
+                    });
                 }
             }
         }, { passive: false });
@@ -523,11 +544,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const img = this.querySelector('img');
             const caption = this.querySelector('.gallery-caption');
             if (img && caption) {
-                try {
-                    openPhotoModal(img.src, caption.textContent);
-                } catch (error) {
-                    console.error('Error opening photo modal:', error);
-                }
+                // Use requestAnimationFrame for smooth operation
+                requestAnimationFrame(() => {
+                    try {
+                        openPhotoModal(img.src, caption.textContent);
+                    } catch (error) {
+                        console.error('Error opening photo modal:', error);
+                    }
+                });
             }
         });
     });
