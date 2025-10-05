@@ -115,17 +115,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const venueAddress = '경기도 용인시 수지구 광교중앙로295번길 3 1층 117~130호';
         const venueName = '우루루 광교 상현점';
 
-        // Create Google Maps iframe (clean, no overlay)
+        // Create Google Maps iframe (CSP friendly, no API calls)
         const searchQuery = encodeURIComponent(venueAddress);
         mapElement.innerHTML = `
             <iframe 
-                src="https://www.google.com/maps?q=${searchQuery}&output=embed"
+                src="https://www.google.com/maps?q=${searchQuery}&output=embed&t=m&z=15"
                 width="100%" 
                 height="100%" 
                 style="border:0; border-radius: 15px;" 
                 allowfullscreen="" 
                 loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
+                referrerpolicy="no-referrer-when-downgrade"
+                sandbox="allow-scripts allow-same-origin">
             </iframe>
         `;
     }
@@ -362,12 +363,12 @@ let isOpeningModal = false;
 function openPhotoModal(imageSrc, caption) {
     // 디버깅을 위한 콘솔 로그
     console.log('openPhotoModal called:', imageSrc, caption);
-    
+
     if (isModalOpen || !imageSrc) {
         console.log('Modal already open or no image src');
         return;
     }
-    
+
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
@@ -385,7 +386,7 @@ function openPhotoModal(imageSrc, caption) {
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     isModalOpen = true;
-    
+
     console.log('Modal opened successfully');
 }
 
@@ -425,15 +426,15 @@ document.addEventListener('DOMContentLoaded', function () {
         // 최적화된 이미지용 모달 (안전한 클릭)
         galleryContainer.addEventListener('click', function (e) {
             console.log('Gallery clicked:', e.target);
-            
+
             if (isModalOpen) {
                 console.log('Modal already open');
                 return;
             }
-            
+
             const galleryItem = e.target.closest('.gallery-item');
             console.log('Gallery item:', galleryItem);
-            
+
             if (!galleryItem) return;
 
             const img = galleryItem.querySelector('img');
