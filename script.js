@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/7.jpg', caption: '애미야 불꺼라' },
         { src: 'photo/8.jpg', caption: '용용이 탄생' },
         { src: 'photo/9.JPG', caption: '용용이' },
-        
+
         // 두 번째 배치 (10-18장)
         { src: 'photo/10.jpg', caption: '예원이의 일상' },
         { src: 'photo/11.jpg', caption: '놀이 시간' },
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/16.jpg', caption: '가족과 함께' },
         { src: 'photo/17.jpg', caption: '첫 걸음마' },
         { src: 'photo/18.jpg', caption: '생일 준비' },
-        
+
         // 세 번째 배치 (19-27장)
         { src: 'photo/19.jpg', caption: '예원이의 모험' },
         { src: 'photo/20.jpg', caption: '장난감과 함께' },
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/25.jpg', caption: '성장의 흔적' },
         { src: 'photo/26.jpg', caption: '소중한 추억' },
         { src: 'photo/27.jpg', caption: '사랑스러운 모습' },
-        
+
         // 네 번째 배치 (28-36장)
         { src: 'photo/28.jpg', caption: '첫 웃음' },
         { src: 'photo/29.jpg', caption: '놀라운 순간' },
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/34.jpg', caption: '예원이의 세계' },
         { src: 'photo/35.jpg', caption: '행복한 순간' },
         { src: 'photo/36.jpg', caption: '사랑스러운 아이' },
-        
+
         // 다섯 번째 배치 (37-45장)
         { src: 'photo/37.jpg', caption: '첫 걸음' },
         { src: 'photo/38.jpg', caption: '놀이의 즐거움' },
@@ -283,7 +283,9 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/42.jpg', caption: '가족의 보물' },
         { src: 'photo/44.jpg', caption: '사랑이 가득' },
         { src: 'photo/45.jpg', caption: '행복한 아이' },
-        
+        { src: 'photo/55.jpg', caption: '첫 생일' },
+        { src: 'photo/56.jpg', caption: '예원이의 특별한 날' }
+
         // 여섯 번째 배치 (46-54장)
         { src: 'photo/46.jpg', caption: '첫 말' },
         { src: 'photo/47.jpg', caption: '놀라운 성장' },
@@ -293,10 +295,9 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/52.jpg', caption: '예원이의 세계' },
         { src: 'photo/53.jpg', caption: '행복한 하루' },
         { src: 'photo/54.jpg', caption: '사랑스러운 순간' },
-        
-        // 일곱 번째 배치 (55-56장)
-        { src: 'photo/55.jpg', caption: '첫 생일' },
-        { src: 'photo/56.jpg', caption: '예원이의 특별한 날' }
+
+
+
     ];
 
     let currentBatch = 0;
