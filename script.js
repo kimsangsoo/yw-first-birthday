@@ -218,77 +218,134 @@ function createScrollProgress() {
 // Initialize scroll progress
 createScrollProgress();
 
-// Virtualized/infinite gallery for gallery.html
+// Simple photo rotation for main page
 document.addEventListener('DOMContentLoaded', function () {
-    const virtualGallery = document.getElementById('virtualGallery');
-    const loader = document.getElementById('loader');
+    const mainGallery = document.querySelector('.main-gallery');
+    const extendedGallery = document.getElementById('extendedGallery');
+    const nextBatchBtn = document.getElementById('nextBatchBtn');
+    const toggleText = nextBatchBtn ? nextBatchBtn.querySelector('.toggle-text') : null;
+    const toggleIcon = nextBatchBtn ? nextBatchBtn.querySelector('.toggle-icon') : null;
 
-    if (!virtualGallery) return; // only runs on gallery.html
+    if (!mainGallery || !extendedGallery || !nextBatchBtn) return;
 
-    const photos = [
-        1,2,3,4,5,6,7,8,9,
-        10,11,12,13,14,15,16,17,18,19,
-        20,21,22,23,24,25,26,27,28,29,
-        30,31,32,33,34,35,36,37,38,39,
-        41,42,44,45,46,47,48,50,51,52,
-        53,54,55,56
-    ].map(n => `photo/${n}${n <= 9 ? (n === 9 ? '.JPG' : '.jpg') : '.jpeg'}`);
+    // All photos in order
+    const allPhotos = [
+        { src: 'photo/1.jpg', caption: '뫄! 들어와' },
+        { src: 'photo/2.jpg', caption: '엄마!! 어디갔어' },
+        { src: 'photo/3.jpg', caption: '한푼줍쇼' },
+        { src: 'photo/4.jpg', caption: '이쁜 공주님' },
+        { src: 'photo/5.jpg', caption: '나는야!! 페피' },
+        { src: 'photo/6.jpg', caption: '사우나 가자' },
+        { src: 'photo/7.jpg', caption: '애미야 불꺼라' },
+        { src: 'photo/8.jpg', caption: '용용이 탄생' },
+        { src: 'photo/9.JPG', caption: '용용이' },
+        { src: 'photo/10.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/11.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/12.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/13.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/14.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/15.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/16.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/17.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/18.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/19.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/20.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/21.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/22.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/23.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/24.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/25.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/26.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/27.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/28.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/29.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/30.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/31.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/32.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/33.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/34.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/35.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/36.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/37.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/38.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/39.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/41.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/42.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/44.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/45.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/46.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/47.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/48.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/50.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/51.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/52.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/53.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/54.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/55.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/56.jpeg', caption: '예원이의 소중한 순간' }
+    ];
 
-    const WINDOW_CAP = 48; // keep DOM nodes bounded
-    const BATCH = 12; // items per chunk
-    let cursor = 0;
-    let loading = false;
+    let currentBatch = 0;
+    const BATCH_SIZE = 9;
 
-    function createItem(src) {
+    function createGalleryItem(photo) {
         const item = document.createElement('div');
         item.className = 'gallery-item';
+        
         const img = document.createElement('img');
         img.className = 'gallery-photo';
-        img.src = src;
-        const cap = document.createElement('div');
-        cap.className = 'gallery-caption';
-        cap.textContent = '예원이의 소중한 순간';
+        img.src = photo.src;
+        
+        const caption = document.createElement('div');
+        caption.className = 'gallery-caption';
+        caption.textContent = photo.caption;
+        
         item.appendChild(img);
-        item.appendChild(cap);
+        item.appendChild(caption);
         return item;
     }
 
-    function pruneIfNeeded() {
-        while (virtualGallery.children.length > WINDOW_CAP) {
-            virtualGallery.removeChild(virtualGallery.firstChild);
+    function showNextBatch() {
+        const startIndex = currentBatch * BATCH_SIZE;
+        const endIndex = Math.min(startIndex + BATCH_SIZE, allPhotos.length);
+        
+        if (startIndex >= allPhotos.length) {
+            // Reset to first batch
+            currentBatch = 0;
+            showNextBatch();
+            return;
         }
-    }
 
-    function appendNextBatch() {
-        if (loading) return;
-        loading = true;
-        if (loader) loader.style.display = 'block';
+        // Clear current gallery
+        mainGallery.innerHTML = '';
+        extendedGallery.innerHTML = '';
 
-        const end = Math.min(cursor + BATCH, photos.length);
-        const frag = document.createDocumentFragment();
-        for (let i = cursor; i < end; i++) {
-            frag.appendChild(createItem(photos[i]));
+        // Show current batch
+        const currentPhotos = allPhotos.slice(startIndex, endIndex);
+        currentPhotos.forEach(photo => {
+            mainGallery.appendChild(createGalleryItem(photo));
+        });
+
+        // Update button text
+        const remaining = allPhotos.length - endIndex;
+        if (remaining > 0) {
+            toggleText.textContent = `다른 사진 보기 (${remaining}장 남음)`;
+            toggleIcon.className = 'fas fa-chevron-right toggle-icon';
+        } else {
+            toggleText.textContent = '첫 번째 사진으로';
+            toggleIcon.className = 'fas fa-chevron-left toggle-icon';
         }
-        cursor = end;
-        virtualGallery.appendChild(frag);
-        pruneIfNeeded();
 
-        if (loader) loader.style.display = cursor >= photos.length ? 'none' : 'block';
-        loading = false;
+        currentBatch++;
     }
 
-    // initial
-    appendNextBatch();
+    // Initial load
+    showNextBatch();
 
-    // infinite scroll using IntersectionObserver on loader
-    if (loader) {
-        const io = new IntersectionObserver((entries) => {
-            for (const e of entries) {
-                if (e.isIntersecting) appendNextBatch();
-            }
-        }, { rootMargin: '200px 0px' });
-        io.observe(loader);
-    }
+    // Button click handler
+    nextBatchBtn.addEventListener('click', function () {
+        showNextBatch();
+    });
 });
 
 // Simple Music Control (no auto-play)

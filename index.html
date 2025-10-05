@@ -126,15 +126,15 @@
                 </div>
             </div>
             
-            <!-- Extended Gallery (initially empty; filled by Load More) -->
-            <div class="gallery-grid extended-gallery" id="extendedGallery"></div>
+            <!-- Extended Gallery (hidden by default) -->
+            <div class="gallery-grid extended-gallery" id="extendedGallery" style="display: none;"></div>
 
             <!-- Load More Button (below photos) -->
             <div class="gallery-toggle">
-                <a href="gallery.html" class="toggle-btn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
-                    <span class="toggle-text">더 많은 사진 보기</span>
-                    <i class="fas fa-chevron-right toggle-icon" style="margin-left:8px;"></i>
-                </a>
+                <button id="nextBatchBtn" class="toggle-btn" type="button">
+                    <span class="toggle-text">다른 사진 보기</span>
+                    <i class="fas fa-chevron-right toggle-icon"></i>
+                </button>
             </div>
         </div>
     </section>
