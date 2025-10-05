@@ -404,6 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const galleryItem = e.target.closest('.gallery-item');
         if (galleryItem) {
             e.preventDefault();
+            e.stopPropagation();
             const img = galleryItem.querySelector('img');
             const caption = galleryItem.querySelector('.gallery-caption');
             if (img && caption) {
