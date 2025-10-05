@@ -405,12 +405,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (galleryItem) {
             e.preventDefault();
             e.stopPropagation();
-            
+
             // Check if this is an onclick event from HTML (prevent double execution)
             if (e.target.hasAttribute('onclick') || e.target.closest('[onclick]')) {
                 return; // Let the onclick handle it
             }
-            
+
             const img = galleryItem.querySelector('img');
             const caption = galleryItem.querySelector('.gallery-caption');
             if (img && caption) {
