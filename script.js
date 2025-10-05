@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!mainGallery || !extendedGallery || !nextBatchBtn) return;
 
-    // 전체 사진 갤러리 (1-56장)
+    // 실제 존재하는 사진 갤러리 (확인된 사진들만)
     const allPhotos = [
         // 첫 번째 배치 (1-9장)
         { src: 'photo/1.jpg', caption: '뫄! 들어와' },
@@ -279,10 +279,8 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/37.jpg', caption: '첫 걸음' },
         { src: 'photo/38.jpg', caption: '놀이의 즐거움' },
         { src: 'photo/39.jpg', caption: '웃음소리' },
-        { src: 'photo/40.jpg', caption: '성장의 기쁨' },
         { src: 'photo/41.jpg', caption: '소중한 추억' },
         { src: 'photo/42.jpg', caption: '가족의 보물' },
-        { src: 'photo/43.jpg', caption: '예원이의 하루' },
         { src: 'photo/44.jpg', caption: '사랑이 가득' },
         { src: 'photo/45.jpg', caption: '행복한 아이' },
         
@@ -290,7 +288,6 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/46.jpg', caption: '첫 말' },
         { src: 'photo/47.jpg', caption: '놀라운 성장' },
         { src: 'photo/48.jpg', caption: '귀여운 모습' },
-        { src: 'photo/49.jpg', caption: '성장의 기록' },
         { src: 'photo/50.jpg', caption: '소중한 순간들' },
         { src: 'photo/51.jpg', caption: '가족의 사랑' },
         { src: 'photo/52.jpg', caption: '예원이의 세계' },
