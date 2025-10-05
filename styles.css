@@ -939,6 +939,22 @@ body.modal-open .extended-gallery {
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
+    background: rgba(0, 0, 0, 0.95) !important;
+}
+
+/* 강제 모달 표시 - 최종 해결책 */
+.photo-modal[style*="display: flex"] {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 999999 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.95) !important;
+    pointer-events: auto !important;
 }
 
 .modal-overlay {
@@ -959,12 +975,21 @@ body.modal-open .extended-gallery {
     justify-content: center;
     max-width: 90vw;
     max-height: 90vh;
-    z-index: 100000;
+    z-index: 1000000;
     background: white;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     margin: 20px;
+    pointer-events: auto;
+}
+
+/* 모달 컨텐츠 강제 표시 */
+.photo-modal[style*="display: flex"] .modal-content {
+    display: flex !important;
+    z-index: 1000000 !important;
+    position: relative !important;
+    pointer-events: auto !important;
 }
 
 .modal-close {
@@ -1000,6 +1025,17 @@ body.modal-open .extended-gallery {
     display: block;
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 1000001;
+    position: relative;
+    pointer-events: auto;
+}
+
+/* 모달 이미지 강제 표시 */
+.photo-modal[style*="display: flex"] .modal-image {
+    display: block !important;
+    z-index: 1000001 !important;
+    position: relative !important;
+    pointer-events: auto !important;
 }
 
 .modal-caption {

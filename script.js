@@ -364,12 +364,12 @@ function openPhotoModal(imageSrc, caption) {
     console.log('=== MODAL OPEN START ===');
     console.log('Image src:', imageSrc);
     console.log('Caption:', caption);
-    
+
     if (isModalOpen) {
         console.log('Modal already open, ignoring');
         return;
     }
-    
+
     if (!imageSrc) {
         console.log('No image src provided');
         return;
@@ -378,7 +378,7 @@ function openPhotoModal(imageSrc, caption) {
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
-    
+
     if (!modal || !modalImage || !modalCaption) {
         console.log('Modal elements not found:', { modal, modalImage, modalCaption });
         return;
@@ -389,13 +389,29 @@ function openPhotoModal(imageSrc, caption) {
     modalImage.alt = caption || '';
     modalCaption.textContent = caption || '';
     
-    // 모달 강제 표시
+    // 모달 컨텐츠 강제 표시
+    const modalContent = modal.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.style.display = 'flex';
+        modalContent.style.zIndex = '1000000';
+        modalContent.style.position = 'relative';
+        modalContent.style.pointerEvents = 'auto';
+    }
+
+    // 모달 강제 표시 - 최종 해결책
     modal.style.display = 'flex';
     modal.style.opacity = '1';
     modal.style.visibility = 'visible';
-    modal.style.zIndex = '99999';
+    modal.style.zIndex = '999999';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0, 0, 0, 0.95)';
+    modal.style.pointerEvents = 'auto';
     modal.classList.add('show');
-    
+
     // body 스크롤 완전 차단
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
@@ -403,9 +419,9 @@ function openPhotoModal(imageSrc, caption) {
     document.body.style.left = '0';
     document.body.style.width = '100%';
     document.body.style.height = '100%';
-    
+
     isModalOpen = true;
-    
+
     console.log('Modal opened successfully');
     console.log('Modal styles:', {
         display: modal.style.display,
@@ -418,7 +434,7 @@ function openPhotoModal(imageSrc, caption) {
 
 function closePhotoModal() {
     console.log('=== MODAL CLOSE START ===');
-    
+
     if (!isModalOpen) {
         console.log('Modal not open, ignoring');
         return;
@@ -429,14 +445,14 @@ function closePhotoModal() {
         console.log('Modal element not found');
         return;
     }
-    
+
     // 모달 완전 숨기기
     modal.style.display = 'none';
     modal.style.opacity = '0';
     modal.style.visibility = 'hidden';
     modal.style.zIndex = '';
     modal.classList.remove('show');
-    
+
     // body 스크롤 완전 복원
     document.body.style.overflow = '';
     document.body.style.position = '';
@@ -444,9 +460,9 @@ function closePhotoModal() {
     document.body.style.left = '';
     document.body.style.width = '';
     document.body.style.height = '';
-    
+
     isModalOpen = false;
-    
+
     console.log('Modal closed successfully');
 }
 
@@ -476,36 +492,36 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('=== GALLERY CLICK ===');
             console.log('Clicked element:', e.target);
             console.log('Modal open status:', isModalOpen);
-            
+
             // 모달이 이미 열려있으면 무시
             if (isModalOpen) {
                 console.log('Modal already open, ignoring click');
                 return;
             }
-            
+
             // 갤러리 아이템 찾기
             const galleryItem = e.target.closest('.gallery-item');
             console.log('Gallery item found:', galleryItem);
-            
+
             if (!galleryItem) {
                 console.log('No gallery item found');
                 return;
             }
-            
+
             // 이미지와 캡션 찾기
             const img = galleryItem.querySelector('img');
             const caption = galleryItem.querySelector('.gallery-caption');
             console.log('Image element:', img);
             console.log('Caption element:', caption);
-            
+
             if (!img || !img.src) {
                 console.log('No image or src found');
                 return;
             }
-            
+
             const imageSrc = img.src;
             const captionText = caption ? caption.textContent : '';
-            
+
             console.log('Opening modal with:', { imageSrc, captionText });
             openPhotoModal(imageSrc, captionText);
         });
@@ -515,10 +531,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('photoModal');
     if (modal) {
         console.log('Setting up modal event listeners');
-        
+
         const overlay = modal.querySelector('.modal-overlay');
         const closeBtn = modal.querySelector('.modal-close');
-        
+
         console.log('Modal elements:', { overlay, closeBtn });
 
         // 오버레이 클릭으로 모달 닫기
@@ -530,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 closePhotoModal();
             });
         }
-        
+
         // 닫기 버튼 클릭으로 모달 닫기
         if (closeBtn) {
             closeBtn.addEventListener('click', function (e) {
@@ -540,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 closePhotoModal();
             });
         }
-        
+
         // 모달 컨텐츠 클릭은 이벤트 전파 방지
         const modalContent = modal.querySelector('.modal-content');
         if (modalContent) {
