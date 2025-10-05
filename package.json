@@ -1,7 +1,7 @@
 {
   "name": "yw-first-birthday",
   "version": "1.0.0",
-  "description": "해섬이의 첫 생일 초대장 웹사이트",
+  "description": "예원이의 첫 생일 초대장 웹사이트",
   "main": "index.html",
   "scripts": {
     "start": "python -m http.server 8000",
@@ -17,7 +17,7 @@
     "first-birthday",
     "doljanchi"
   ],
-  "author": "해섬이 가족",
+  "author": "예원이 가족",
   "license": "MIT",
   "repository": {
     "type": "git",
