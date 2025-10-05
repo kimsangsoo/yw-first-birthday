@@ -247,30 +247,43 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Auto-play on page load
+        // Auto-play on page load with multiple attempts
+        function tryAutoPlay() {
+            backgroundMusic.play().then(() => {
+                musicToggle.classList.add('playing');
+                musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                isPlaying = true;
+                console.log('Music started successfully');
+            }).catch(error => {
+                console.log('Auto-play failed:', error);
+                // Try again after a short delay
+                setTimeout(tryAutoPlay, 500);
+            });
+        }
+
+        // Try auto-play on multiple events
         window.addEventListener('load', function() {
-            setTimeout(() => {
-                backgroundMusic.play().then(() => {
-                    musicToggle.classList.add('playing');
-                    musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-                    isPlaying = true;
-                }).catch(error => {
-                    console.log('Auto-play failed:', error);
-                    // If auto-play fails, try on first user interaction
-                    document.addEventListener('click', function() {
-                        if (!isPlaying) {
-                            backgroundMusic.play().then(() => {
-                                musicToggle.classList.add('playing');
-                                musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-                                isPlaying = true;
-                            }).catch(error => {
-                                console.log('User interaction play failed:', error);
-                            });
-                        }
-                    }, { once: true });
-                });
-            }, 1000); // 1초 후 자동 재생
+            setTimeout(tryAutoPlay, 1000);
         });
+
+        // Also try on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(tryAutoPlay, 2000);
+        });
+
+        // Try on first user interaction (click, touch, scroll)
+        let hasUserInteracted = false;
+        function handleUserInteraction() {
+            if (!hasUserInteracted && !isPlaying) {
+                hasUserInteracted = true;
+                tryAutoPlay();
+            }
+        }
+
+        document.addEventListener('click', handleUserInteraction, { once: true });
+        document.addEventListener('touchstart', handleUserInteraction, { once: true });
+        document.addEventListener('scroll', handleUserInteraction, { once: true });
+        document.addEventListener('keydown', handleUserInteraction, { once: true });
 
         // Handle music end
         backgroundMusic.addEventListener('ended', function () {
