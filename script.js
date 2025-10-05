@@ -430,6 +430,56 @@ function openPhotoModal(imageSrc, caption) {
         zIndex: modal.style.zIndex,
         classList: modal.classList.toString()
     });
+    
+    // 모달 요소 상세 진단
+    console.log('=== MODAL DIAGNOSTICS ===');
+    console.log('Modal element:', modal);
+    console.log('Modal computed styles:', window.getComputedStyle(modal));
+    console.log('Modal rect:', modal.getBoundingClientRect());
+    console.log('Modal parent:', modal.parentElement);
+    console.log('Modal children:', modal.children);
+    
+    // 모달 컨텐츠 진단
+    const modalContent = modal.querySelector('.modal-content');
+    if (modalContent) {
+        console.log('Modal content:', modalContent);
+        console.log('Modal content computed styles:', window.getComputedStyle(modalContent));
+        console.log('Modal content rect:', modalContent.getBoundingClientRect());
+    }
+    
+    // 모달 이미지 진단
+    console.log('Modal image:', modalImage);
+    console.log('Modal image computed styles:', window.getComputedStyle(modalImage));
+    console.log('Modal image rect:', modalImage.getBoundingClientRect());
+    
+    // body 스타일 확인
+    console.log('Body styles:', {
+        overflow: document.body.style.overflow,
+        position: document.body.style.position,
+        top: document.body.style.top,
+        left: document.body.style.left
+    });
+    
+    // 모달이 실제로 보이는지 확인
+    setTimeout(() => {
+        console.log('=== MODAL VISIBILITY CHECK ===');
+        const modalRect = modal.getBoundingClientRect();
+        console.log('Modal rect after 100ms:', modalRect);
+        console.log('Modal visible:', modalRect.width > 0 && modalRect.height > 0);
+        console.log('Modal in viewport:', modalRect.top >= 0 && modalRect.left >= 0);
+        
+        // 모달이 다른 요소에 가려져 있는지 확인
+        const elementsAtPoint = document.elementsFromPoint(
+            window.innerWidth / 2, 
+            window.innerHeight / 2
+        );
+        console.log('Elements at center point:', elementsAtPoint);
+        console.log('Modal is top element:', elementsAtPoint[0] === modal || modal.contains(elementsAtPoint[0]));
+        
+        // 모달 HTML 구조 확인
+        console.log('Modal HTML:', modal.outerHTML);
+        console.log('Modal parent HTML:', modal.parentElement ? modal.parentElement.outerHTML.substring(0, 200) + '...' : 'No parent');
+    }, 100);
 }
 
 function closePhotoModal() {
