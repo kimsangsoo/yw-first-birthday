@@ -262,12 +262,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Try auto-play on multiple events
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             setTimeout(tryAutoPlay, 1000);
         });
 
         // Also try on DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             setTimeout(tryAutoPlay, 2000);
         });
 
