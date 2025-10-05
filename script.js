@@ -229,11 +229,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Predefined list of extra photo filenames
     const extraPhotos = [
-        10,11,12,13,14,15,16,17,18,19,
-        20,21,22,23,24,25,26,27,28,29,
-        30,31,32,33,34,35,36,37,38,39,
-        41,42,44,45,46,47,48,50,51,52,
-        53,54,55,56
+        10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+        30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+        41, 42, 44, 45, 46, 47, 48, 50, 51, 52,
+        53, 54, 55, 56
     ].map(n => `photo/${n}.jpeg`);
 
     let nextIndex = 0;
@@ -314,8 +314,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Simple Photo Modal
 let isModalOpen = false;
+let isOpeningModal = false;
 function openPhotoModal(imageSrc, caption) {
-    if (isModalOpen) return; // prevent re-entrant opens
+    if (isModalOpen || isOpeningModal) return; // prevent re-entrant opens
     if (!imageSrc) return; // ignore if no image source available
 
     const modal = document.getElementById('photoModal');
@@ -323,12 +324,21 @@ function openPhotoModal(imageSrc, caption) {
     const modalCaption = document.getElementById('modalCaption');
 
     if (modal && modalImage && modalCaption) {
-        isModalOpen = true;
-        modalImage.src = imageSrc;
-        modalCaption.textContent = caption;
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        document.body.classList.add('modal-open');
+        isOpeningModal = true;
+        // Hint the browser for smoother decode
+        modalImage.setAttribute('decoding', 'async');
+        modalImage.setAttribute('loading', 'eager');
+
+        // Defer to next frame to avoid jank on click
+        requestAnimationFrame(() => {
+            modalImage.src = imageSrc;
+            modalCaption.textContent = caption;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('modal-open');
+            isModalOpen = true;
+            isOpeningModal = false;
+        });
     }
 }
 
