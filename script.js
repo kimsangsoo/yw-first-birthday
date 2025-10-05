@@ -247,20 +247,30 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Auto-play on first user interaction
-        let hasInteracted = false;
-        document.addEventListener('click', function () {
-            if (!hasInteracted && !isPlaying) {
-                hasInteracted = true;
+        // Auto-play on page load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
                 backgroundMusic.play().then(() => {
                     musicToggle.classList.add('playing');
                     musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
                     isPlaying = true;
                 }).catch(error => {
                     console.log('Auto-play failed:', error);
+                    // If auto-play fails, try on first user interaction
+                    document.addEventListener('click', function() {
+                        if (!isPlaying) {
+                            backgroundMusic.play().then(() => {
+                                musicToggle.classList.add('playing');
+                                musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                                isPlaying = true;
+                            }).catch(error => {
+                                console.log('User interaction play failed:', error);
+                            });
+                        }
+                    }, { once: true });
                 });
-            }
-        }, { once: true });
+            }, 1000); // 1초 후 자동 재생
+        });
 
         // Handle music end
         backgroundMusic.addEventListener('ended', function () {
