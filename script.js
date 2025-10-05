@@ -431,14 +431,14 @@ function openPhotoModal(imageSrc, caption) {
                 modalImage.src = imageSrc;
                 modalCaption.textContent = caption;
                 modal.classList.remove('opening');
-                
+
                 // Add animation class
                 setTimeout(() => {
                     modal.classList.add('active');
                 }, 10);
             });
         };
-        
+
         img.onerror = function () {
             modalCaption.textContent = '이미지 로딩 실패';
             modal.classList.remove('opening');
@@ -446,7 +446,7 @@ function openPhotoModal(imageSrc, caption) {
                 modal.classList.add('active');
             }, 10);
         };
-        
+
         img.src = imageSrc;
     }
 }
