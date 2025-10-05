@@ -70,8 +70,8 @@ document.querySelectorAll('.greeting-text, .timeline-item').forEach(el => {
 
 // Gallery items with different observer settings
 const galleryObserverOptions = {
-    threshold: 0.8,
-    rootMargin: '0px 0px -300px 0px'
+    threshold: 0.9,
+    rootMargin: '0px 0px -400px 0px'
 };
 
 const galleryObserver = new IntersectionObserver((entries) => {
