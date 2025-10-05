@@ -248,16 +248,30 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Auto-play on page load with multiple attempts
+        let retryCount = 0;
+        const maxRetries = 10;
+        
         function tryAutoPlay() {
+            if (isPlaying) return; // Already playing
+            
+            console.log('Attempting to play music, attempt:', retryCount + 1);
+            
             backgroundMusic.play().then(() => {
                 musicToggle.classList.add('playing');
                 musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
                 isPlaying = true;
-                console.log('Music started successfully');
+                console.log('Music started successfully!');
+                retryCount = 0; // Reset retry count on success
             }).catch(error => {
                 console.log('Auto-play failed:', error);
-                // Try again after a short delay
-                setTimeout(tryAutoPlay, 500);
+                retryCount++;
+                
+                if (retryCount < maxRetries) {
+                    console.log('Retrying in 500ms...');
+                    setTimeout(tryAutoPlay, 500);
+                } else {
+                    console.log('Max retries reached, giving up auto-play');
+                }
             });
         }
 
@@ -271,19 +285,24 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(tryAutoPlay, 2000);
         });
 
-        // Try on first user interaction (click, touch, scroll)
-        let hasUserInteracted = false;
+        // Try on user interaction (click, touch, scroll) - without once: true
         function handleUserInteraction() {
-            if (!hasUserInteracted && !isPlaying) {
-                hasUserInteracted = true;
+            if (!isPlaying) {
+                console.log('User interaction detected, trying to play music...');
                 tryAutoPlay();
             }
         }
 
-        document.addEventListener('click', handleUserInteraction, { once: true });
-        document.addEventListener('touchstart', handleUserInteraction, { once: true });
-        document.addEventListener('scroll', handleUserInteraction, { once: true });
-        document.addEventListener('keydown', handleUserInteraction, { once: true });
+        // Add multiple event listeners without once: true
+        document.addEventListener('click', handleUserInteraction);
+        document.addEventListener('touchstart', handleUserInteraction);
+        document.addEventListener('touchend', handleUserInteraction);
+        document.addEventListener('scroll', handleUserInteraction);
+        document.addEventListener('keydown', handleUserInteraction);
+        document.addEventListener('mousemove', handleUserInteraction);
+        
+        // Also try on window focus
+        window.addEventListener('focus', handleUserInteraction);
 
         // Handle music end
         backgroundMusic.addEventListener('ended', function () {
