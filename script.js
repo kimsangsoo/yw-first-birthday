@@ -360,6 +360,7 @@ document.addEventListener('DOMContentLoaded', function () {
 let isModalOpen = false;
 function openPhotoModal(imageSrc, caption) {
     if (isModalOpen) return; // prevent re-entrant opens
+    if (!imageSrc) return; // ignore if no image source available
 
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
@@ -412,11 +413,25 @@ document.addEventListener('DOMContentLoaded', function () {
             if (isModalOpen) return;
             const galleryItem = e.target.closest('.gallery-item');
             if (!galleryItem || !galleryContainer.contains(galleryItem)) return;
+
             const img = galleryItem.querySelector('img');
             const caption = galleryItem.querySelector('.gallery-caption');
-            if (img && caption) {
-                openPhotoModal(img.src, caption.textContent);
+
+            if (!img || !caption) return;
+
+            // Prefer loaded src; fallback to data-src for lazy images
+            const loadedSrc = img.getAttribute('src');
+            const lazySrc = img.getAttribute('data-src');
+
+            // If only data-src exists, start loading it for next time
+            if (!loadedSrc && lazySrc) {
+                img.src = lazySrc;
             }
+
+            const chosenSrc = loadedSrc || lazySrc || '';
+            if (!chosenSrc) return; // nothing to open
+
+            openPhotoModal(chosenSrc, caption.textContent);
         });
     }
 
