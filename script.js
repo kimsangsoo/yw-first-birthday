@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!mainGallery || !extendedGallery || !nextBatchBtn) return;
 
-    // 확장된 사진 갤러리 (1-9장, 10-18장 방식)
+    // 전체 사진 갤러리 (1-56장)
     const allPhotos = [
         // 첫 번째 배치 (1-9장)
         { src: 'photo/1.jpg', caption: '뫄! 들어와' },
@@ -262,7 +262,44 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/24.jpg', caption: '웃음이 가득' },
         { src: 'photo/25.jpg', caption: '성장의 흔적' },
         { src: 'photo/26.jpg', caption: '소중한 추억' },
-        { src: 'photo/27.jpg', caption: '사랑스러운 모습' }
+        { src: 'photo/27.jpg', caption: '사랑스러운 모습' },
+        
+        // 네 번째 배치 (28-36장)
+        { src: 'photo/28.jpg', caption: '첫 웃음' },
+        { src: 'photo/29.jpg', caption: '놀라운 순간' },
+        { src: 'photo/30.jpg', caption: '귀여운 표정' },
+        { src: 'photo/31.jpg', caption: '성장의 발자취' },
+        { src: 'photo/32.jpg', caption: '소중한 하루' },
+        { src: 'photo/33.jpg', caption: '가족의 사랑' },
+        { src: 'photo/34.jpg', caption: '예원이의 세계' },
+        { src: 'photo/35.jpg', caption: '행복한 순간' },
+        { src: 'photo/36.jpg', caption: '사랑스러운 아이' },
+        
+        // 다섯 번째 배치 (37-45장)
+        { src: 'photo/37.jpg', caption: '첫 걸음' },
+        { src: 'photo/38.jpg', caption: '놀이의 즐거움' },
+        { src: 'photo/39.jpg', caption: '웃음소리' },
+        { src: 'photo/40.jpg', caption: '성장의 기쁨' },
+        { src: 'photo/41.jpg', caption: '소중한 추억' },
+        { src: 'photo/42.jpg', caption: '가족의 보물' },
+        { src: 'photo/43.jpg', caption: '예원이의 하루' },
+        { src: 'photo/44.jpg', caption: '사랑이 가득' },
+        { src: 'photo/45.jpg', caption: '행복한 아이' },
+        
+        // 여섯 번째 배치 (46-54장)
+        { src: 'photo/46.jpg', caption: '첫 말' },
+        { src: 'photo/47.jpg', caption: '놀라운 성장' },
+        { src: 'photo/48.jpg', caption: '귀여운 모습' },
+        { src: 'photo/49.jpg', caption: '성장의 기록' },
+        { src: 'photo/50.jpg', caption: '소중한 순간들' },
+        { src: 'photo/51.jpg', caption: '가족의 사랑' },
+        { src: 'photo/52.jpg', caption: '예원이의 세계' },
+        { src: 'photo/53.jpg', caption: '행복한 하루' },
+        { src: 'photo/54.jpg', caption: '사랑스러운 순간' },
+        
+        // 일곱 번째 배치 (55-56장)
+        { src: 'photo/55.jpg', caption: '첫 생일' },
+        { src: 'photo/56.jpg', caption: '예원이의 특별한 날' }
     ];
 
     let currentBatch = 0;
@@ -333,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const remaining = allPhotos.length - endIndex;
         const currentBatchNum = Math.floor(startIndex / BATCH_SIZE) + 1;
         const totalBatches = Math.ceil(allPhotos.length / BATCH_SIZE);
-        
+
         if (remaining > 0) {
             const nextBatchNum = currentBatchNum + 1;
             toggleText.textContent = `${nextBatchNum}번째 사진 보기 (${remaining}장 남음)`;
