@@ -294,6 +294,19 @@ document.addEventListener('DOMContentLoaded', function () {
         
         const img = document.createElement('img');
         img.className = 'gallery-photo';
+        
+        // 이미지 최적화 설정
+        img.setAttribute('loading', 'lazy');
+        img.setAttribute('decoding', 'async');
+        img.setAttribute('fetchpriority', 'low');
+        
+        // 썸네일용 작은 해상도 설정 (CSS로 크기 제한)
+        img.style.maxWidth = '300px';
+        img.style.maxHeight = '300px';
+        img.style.objectFit = 'cover';
+        
+        // 원본 이미지 경로 (모달에서 사용)
+        img.dataset.originalSrc = photo.src;
         img.src = photo.src;
         
         const caption = document.createElement('div');
@@ -308,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showNextBatch() {
         const startIndex = currentBatch * BATCH_SIZE;
         const endIndex = Math.min(startIndex + BATCH_SIZE, allPhotos.length);
-        
+
         if (startIndex >= allPhotos.length) {
             // Reset to first batch
             currentBatch = 0;
@@ -449,19 +462,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!img || !caption) return;
 
-            // Prefer loaded src; fallback to data-src for lazy images
-            const loadedSrc = img.getAttribute('src');
-            const lazySrc = img.getAttribute('data-src');
+            // 원본 이미지 사용 (모달에서는 고해상도)
+            const originalSrc = img.dataset.originalSrc || img.src;
+            if (!originalSrc) return;
 
-            // If only data-src exists, start loading it for next time
-            if (!loadedSrc && lazySrc) {
-                img.src = lazySrc;
-            }
-
-            const chosenSrc = loadedSrc || lazySrc || '';
-            if (!chosenSrc) return; // nothing to open
-
-            openPhotoModal(chosenSrc, caption.textContent);
+            openPhotoModal(originalSrc, caption.textContent);
         });
     }
 

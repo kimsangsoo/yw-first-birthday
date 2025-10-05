@@ -606,6 +606,13 @@ section {
     object-fit: cover;
     transition: transform 0.3s ease;
     flex: 1;
+    /* 이미지 최적화 */
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /* 썸네일용 크기 제한 */
+    max-width: 300px;
+    max-height: 300px;
 }
 
 .gallery-item:hover .gallery-photo {
@@ -980,6 +987,10 @@ body.modal-open .extended-gallery {
     object-fit: contain;
     display: block;
     image-rendering: auto;
+    /* 모달용 고해상도 이미지 최적화 */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform;
 }
 
 .modal-caption {
