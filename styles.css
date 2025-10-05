@@ -633,6 +633,20 @@ section {
     transform: translateY(0);
 }
 
+/* Disable gallery hover effects while modal is open */
+body.modal-open .gallery-item:hover .gallery-photo,
+body.modal-open .gallery-item:hover .gallery-caption {
+    transform: none;
+    opacity: 1;
+}
+
+/* Prevent pointer events on page behind modal */
+body.modal-open .main-section,
+body.modal-open .photo-gallery,
+body.modal-open .extended-gallery {
+    pointer-events: none;
+}
+
 @keyframes bounce {
     0%, 100% {
         transform: scale(1);

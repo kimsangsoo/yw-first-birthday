@@ -357,24 +357,32 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Simple Photo Modal
+let isModalOpen = false;
 function openPhotoModal(imageSrc, caption) {
+    if (isModalOpen) return; // prevent re-entrant opens
+
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
 
     if (modal && modalImage && modalCaption) {
+        isModalOpen = true;
         modalImage.src = imageSrc;
         modalCaption.textContent = caption;
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        document.body.classList.add('modal-open');
     }
 }
 
 function closePhotoModal() {
+    if (!isModalOpen) return;
     const modal = document.getElementById('photoModal');
     if (modal) {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
+        document.body.classList.remove('modal-open');
+        isModalOpen = false;
     }
 }
 
@@ -388,34 +396,46 @@ document.addEventListener('keydown', function (event) {
 });
 
 // Close modal when clicking outside the image
-document.addEventListener('click', function (event) {
-    const modal = document.getElementById('photoModal');
-    if (event.target === modal) {
-        event.preventDefault();
-        event.stopPropagation();
-        closePhotoModal();
-    }
-});
+// (moved to DOMContentLoaded direct bindings below)
 
-// Simple Gallery Click Handler
+// Re-bind minimal, safe handlers after stripping inline ones
 document.addEventListener('DOMContentLoaded', function () {
-    // Use event delegation for better performance
-    document.addEventListener('click', function (e) {
-        const galleryItem = e.target.closest('.gallery-item');
-        if (galleryItem) {
-            e.preventDefault();
-            e.stopPropagation();
+    // Remove all inline onclick handlers inside gallery
+    const galleryContainer = document.querySelector('.gallery-container');
+    if (galleryContainer) {
+        galleryContainer.querySelectorAll('[onclick]').forEach(function (el) {
+            el.removeAttribute('onclick');
+        });
 
-            // Check if this is an onclick event from HTML (prevent double execution)
-            if (e.target.hasAttribute('onclick') || e.target.closest('[onclick]')) {
-                return; // Let the onclick handle it
-            }
-
+        // Single delegated click handler on container
+        galleryContainer.addEventListener('click', function (e) {
+            if (isModalOpen) return;
+            const galleryItem = e.target.closest('.gallery-item');
+            if (!galleryItem || !galleryContainer.contains(galleryItem)) return;
             const img = galleryItem.querySelector('img');
             const caption = galleryItem.querySelector('.gallery-caption');
             if (img && caption) {
                 openPhotoModal(img.src, caption.textContent);
             }
+        });
+    }
+
+    // Bind modal overlay and close button directly
+    const modal = document.getElementById('photoModal');
+    if (modal) {
+        const overlay = modal.querySelector('.modal-overlay');
+        const closeBtn = modal.querySelector('.modal-close');
+        if (overlay) {
+            overlay.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closePhotoModal();
+            });
         }
-    });
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closePhotoModal();
+            });
+        }
+    }
 });
