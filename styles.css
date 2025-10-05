@@ -11,6 +11,9 @@ html, body {
     height: 100%;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 /* Music Control */
@@ -91,12 +94,12 @@ body {
 .main-section {
     min-height: 100vh;
     background: url("photo/back.png") center/cover no-repeat;
-    background-attachment: fixed;
+    background-attachment: scroll;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     padding: 2rem 0 8rem 0;
     will-change: auto;
 }
@@ -110,6 +113,8 @@ body {
     bottom: 0;
     background: linear-gradient(135deg, rgba(253, 242, 248, 0.7) 0%, rgba(252, 231, 243, 0.6) 50%, rgba(248, 244, 255, 0.7) 100%);
     z-index: 2;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .main-content {
@@ -118,6 +123,8 @@ body {
     text-align: center;
     position: relative;
     z-index: 3;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 /* Flower decorations */
