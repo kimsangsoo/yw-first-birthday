@@ -178,15 +178,17 @@ function openPhotoModal(imageSrc, caption) {
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
 
-    modalImage.src = imageSrc;
-    modalCaption.textContent = caption;
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    if (modal && modalImage && modalCaption) {
+        modalImage.src = imageSrc;
+        modalCaption.textContent = caption;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
-    // Add animation class
-    setTimeout(() => {
-        modal.classList.add('active');
-    }, 10);
+        // Add animation class
+        setTimeout(() => {
+            modal.classList.add('active');
+        }, 10);
+    }
 }
 
 function closePhotoModal() {
@@ -213,4 +215,24 @@ document.addEventListener('click', function (event) {
     if (event.target === modal) {
         closePhotoModal();
     }
+});
+
+// Mobile touch events for gallery items
+document.addEventListener('DOMContentLoaded', function () {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => {
+        // Add touch event for mobile
+        item.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        item.addEventListener('touchend', function (e) {
+            e.preventDefault();
+            const img = this.querySelector('img');
+            const caption = this.querySelector('.gallery-caption');
+            if (img && caption) {
+                openPhotoModal(img.src, caption.textContent);
+            }
+        }, { passive: false });
+    });
 });

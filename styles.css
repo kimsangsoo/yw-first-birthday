@@ -301,43 +301,24 @@ body {
 }
 
 .description {
-    font-size: 1.0rem;
-    color: #6b7280;
-    line-height: 2.2;
+    font-size: 1.4rem;
+    color: #4a5568;
+    line-height: 1.8;
     margin-bottom: 2.5rem;
     text-align: center;
-    font-family: 'Gowun Batang', serif;
+    font-family: 'Hi Melody', cursive;
     font-weight: 400;
     position: relative;
-    padding: 0 1.5rem;
+    padding: 2rem 1.5rem;
     z-index: 2;
-    background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 0.5px;
-    word-spacing: 2px;
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #f8f4ff 100%);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(255, 182, 193, 0.2);
+    border: 2px solid rgba(255, 182, 193, 0.3);
+    letter-spacing: 0.3px;
+    word-spacing: 1px;
 }
 
-.description::before {
-    content: '🌸';
-    position: absolute;
-    top: -15px;
-    left: 10px;
-    font-size: 1.5rem;
-    opacity: 0.7;
-    animation: float 3s ease-in-out infinite;
-}
-
-.description::after {
-    content: '🌸';
-    position: absolute;
-    bottom: -15px;
-    right: 10px;
-    font-size: 1.5rem;
-    opacity: 0.7;
-    animation: float 3s ease-in-out infinite 1.5s;
-}
 
 .event-info {
     text-align: center;
@@ -485,6 +466,7 @@ section {
     gap: 1rem;
     max-width: 600px;
     margin: 0 auto;
+    padding: 0 1rem;
 }
 
 .gallery-item {
@@ -933,12 +915,12 @@ section {
     }
     
     .description {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         text-align: center;
-        padding: 0 1rem;
-        line-height: 2.0;
-        letter-spacing: 0.3px;
-        word-spacing: 1px;
+        padding: 1.5rem 1rem;
+        line-height: 1.6;
+        letter-spacing: 0.2px;
+        word-spacing: 0.5px;
     }
     
     .description::before,
@@ -984,6 +966,7 @@ section {
     .gallery-grid {
         gap: 0.8rem;
         max-width: 500px;
+        padding: 0 0.5rem;
     }
     
     .gallery-item {
@@ -1015,22 +998,33 @@ section {
         max-width: 95vw;
         max-height: 95vh;
         margin: 10px;
+        border-radius: 15px;
     }
     
     .modal-image {
         max-height: 60vh;
+        width: 100%;
+        object-fit: contain;
     }
     
     .modal-caption {
         padding: 15px;
         font-size: 1rem;
+        text-align: center;
     }
     
     .modal-close {
-        width: 35px;
-        height: 35px;
-        font-size: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
         top: 10px;
         right: 10px;
+        z-index: 10003;
+    }
+    
+    .gallery-item {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
 }
