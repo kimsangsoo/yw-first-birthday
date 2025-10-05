@@ -361,7 +361,7 @@ function openPhotoModal(imageSrc, caption) {
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
-    
+
     if (modal && modalImage && modalCaption) {
         modalImage.src = imageSrc;
         modalCaption.textContent = caption;
@@ -400,7 +400,7 @@ document.addEventListener('click', function (event) {
 // Simple Gallery Click Handler
 document.addEventListener('DOMContentLoaded', function () {
     // Use event delegation for better performance
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         const galleryItem = e.target.closest('.gallery-item');
         if (galleryItem) {
             e.preventDefault();
