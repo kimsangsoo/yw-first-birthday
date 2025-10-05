@@ -219,16 +219,16 @@ function createScrollProgress() {
 createScrollProgress();
 
 // Gallery Toggle Functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const galleryToggle = document.getElementById('galleryToggle');
     const extendedGallery = document.getElementById('extendedGallery');
     const toggleText = document.querySelector('.toggle-text');
     const toggleIcon = document.querySelector('.toggle-icon');
-    
+
     if (galleryToggle && extendedGallery) {
         let isExpanded = false;
-        
-        galleryToggle.addEventListener('click', function() {
+
+        galleryToggle.addEventListener('click', function () {
             if (isExpanded) {
                 // Collapse
                 extendedGallery.style.display = 'none';
