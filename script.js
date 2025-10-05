@@ -328,14 +328,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Background Music Control
+// Simple Music Control (no auto-play)
 document.addEventListener('DOMContentLoaded', function () {
     const musicToggle = document.getElementById('musicToggle');
     const backgroundMusic = document.getElementById('backgroundMusic');
     let isPlaying = false;
 
     if (musicToggle && backgroundMusic) {
-        // Set initial volume
         backgroundMusic.volume = 0.3;
 
         musicToggle.addEventListener('click', function () {
@@ -351,109 +350,31 @@ document.addEventListener('DOMContentLoaded', function () {
                     isPlaying = true;
                 }).catch(error => {
                     console.log('Audio play failed:', error);
-                    // Show user interaction required message
-                    alert('음악을 재생하려면 페이지를 클릭해주세요.');
                 });
             }
-        });
-
-        // Simple auto-play attempt (no retry spam)
-        function tryAutoPlay() {
-            if (isPlaying) return;
-
-            backgroundMusic.play().then(() => {
-                musicToggle.classList.add('playing');
-                musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-                isPlaying = true;
-                console.log('Music started successfully!');
-            }).catch(error => {
-                console.log('Auto-play blocked by browser policy. User interaction required.');
-            });
-        }
-
-        // Try auto-play once on page load
-        window.addEventListener('load', function () {
-            setTimeout(tryAutoPlay, 1000);
-        });
-
-        // Try on first user interaction
-        function handleUserInteraction() {
-            if (!isPlaying) {
-                tryAutoPlay();
-            }
-        }
-
-        document.addEventListener('click', handleUserInteraction, { once: true });
-        document.addEventListener('touchstart', handleUserInteraction, { once: true });
-        document.addEventListener('scroll', handleUserInteraction, { once: true });
-
-        // Handle music end
-        backgroundMusic.addEventListener('ended', function () {
-            musicToggle.classList.remove('playing');
-            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
-            isPlaying = false;
         });
     }
 });
 
-// Photo Modal functionality (iOS Safari optimized)
-let scrollPosition = 0;
-
+// Simple Photo Modal
 function openPhotoModal(imageSrc, caption) {
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
-
-    if (!modal || !modalImage || !modalCaption) return;
-
-    // Simple and safe modal opening
-    try {
-        // Save scroll position
-        scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-
-        // Set content
+    
+    if (modal && modalImage && modalCaption) {
         modalImage.src = imageSrc;
         modalCaption.textContent = caption;
-
-        // Show modal
         modal.style.display = 'flex';
-
-        // Prevent background scroll
         document.body.style.overflow = 'hidden';
-
-        // Add active class after a short delay
-        setTimeout(() => {
-            modal.classList.add('active');
-        }, 50);
-
-    } catch (error) {
-        console.error('Error opening modal:', error);
     }
 }
 
 function closePhotoModal() {
     const modal = document.getElementById('photoModal');
-    if (!modal) return;
-
-    try {
-        // Remove active class
-        modal.classList.remove('active');
-
-        // Hide modal after animation
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
-
-        // Restore scrolling
+    if (modal) {
+        modal.style.display = 'none';
         document.body.style.overflow = 'auto';
-
-        // Restore scroll position
-        if (scrollPosition !== undefined) {
-            window.scrollTo(0, scrollPosition);
-        }
-
-    } catch (error) {
-        console.error('Error closing modal:', error);
     }
 }
 
@@ -476,51 +397,18 @@ document.addEventListener('click', function (event) {
     }
 });
 
-// Mobile touch events for gallery items (iOS Safari optimized)
+// Simple Gallery Click Handler
 document.addEventListener('DOMContentLoaded', function () {
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    galleryItems.forEach(item => {
-        let touchStartTime = 0;
-        let touchStartX = 0;
-        let touchStartY = 0;
-
-        // Touch start
-        item.addEventListener('touchstart', function (e) {
-            touchStartTime = Date.now();
-            const touch = e.touches[0];
-            touchStartX = touch.clientX;
-            touchStartY = touch.clientY;
-        }, { passive: true });
-
-        // Touch end
-        item.addEventListener('touchend', function (e) {
-            const touchEndTime = Date.now();
-            const touchDuration = touchEndTime - touchStartTime;
-
-            // Only trigger if touch was quick (not a scroll)
-            if (touchDuration < 300) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                const img = this.querySelector('img');
-                const caption = this.querySelector('.gallery-caption');
-                if (img && caption) {
-                    // Simple direct call
-                    openPhotoModal(img.src, caption.textContent);
-                }
-            }
-        }, { passive: false });
-
-        // Also keep click event for desktop
-        item.addEventListener('click', function (e) {
+    // Use event delegation for better performance
+    document.addEventListener('click', function(e) {
+        const galleryItem = e.target.closest('.gallery-item');
+        if (galleryItem) {
             e.preventDefault();
-            e.stopPropagation();
-            const img = this.querySelector('img');
-            const caption = this.querySelector('.gallery-caption');
+            const img = galleryItem.querySelector('img');
+            const caption = galleryItem.querySelector('.gallery-caption');
             if (img && caption) {
-                // Simple direct call
                 openPhotoModal(img.src, caption.textContent);
             }
-        });
+        }
     });
 });
