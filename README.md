@@ -48,15 +48,12 @@
 - 연락처 정보
 
 ### 지도 API 설정
-실제 지도를 표시하려면 카카오맵 API 키를 설정해야 합니다:
+구글 지도를 사용하여 API 키 없이도 실제 지도가 표시됩니다:
 
-1. [카카오 개발자 센터](https://developers.kakao.com/)에서 계정 생성
-2. 애플리케이션 등록 후 JavaScript 키 발급
-3. `index.html`의 11번째 줄에서 `YOUR_KAKAO_MAP_API_KEY`를 실제 키로 교체
-
-```html
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=실제_API_키"></script>
-```
+- **구글 지도**: API 키 불필요, 즉시 사용 가능
+- **자동 마커**: 우루루 광교 상현점 위치에 마커 표시
+- **정보창**: 마커 클릭 시 상세 정보 표시
+- **반응형**: 모바일과 데스크톱 모두 지원
 
 ### 색상 변경
 `styles.css`에서 CSS 변수를 수정하여 색상을 변경할 수 있습니다.
@@ -66,7 +63,7 @@
 - **HTML5**: 시맨틱 마크업
 - **CSS3**: Flexbox, Grid, 애니메이션, 그라데이션
 - **JavaScript (ES6+)**: 모달, 폼 처리, 스크롤 이벤트, 지도 API
-- **카카오맵 API**: 실제 지도 표시 및 마커
+- **구글 지도 API**: 실제 지도 표시 및 마커 (API 키 불필요)
 - **Font Awesome**: 아이콘
 - **Google Fonts**: Noto Sans KR
 

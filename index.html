@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>예원이의 첫 생일 초대장</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gamja+Flower&family=Hi+Melody&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gamja+Flower&family=Hi+Melody&family=Single+Day&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- 카카오맵 API 키를 발급받아 아래 YOUR_KAKAO_MAP_API_KEY를 교체해주세요 -->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_MAP_API_KEY"></script>
+    <!-- 지도는 iframe으로 표시 -->
 </head>
 <body>
 
@@ -39,12 +38,15 @@
             <!-- Event details -->
             <div class="event-details">
                 <p class="description">
-                    예원이가 세상에 첫 발을 내딛은지 어느덧 일년,<br>
-                    그 특별한 날에 소중한 분들과 함께하고 싶습니다.
+                    예원이가<br>
+                    세상에 첫 발을 내딛은지<br>
+                    어느덧 일년이 되었습니다 ✨<br>
+                    그 특별한 날에 소중한 분들과<br>
+                    함께하고 싶습니다 💕
                 </p>
                 <div class="event-info">
                     <p class="date-time">2025년 10월 11일 토요일 14:00</p>
-                    <p class="venue">광교 우루루</p>
+                    <p class="venue">우루루 광교 상현점</p>
                     <p class="parents">아빠 김상수 엄마 최효실</p>
                 </div>
             </div>
@@ -62,45 +64,55 @@
         <div class="gallery-container">
             <h2 class="gallery-title">예원이의 소중한 순간들</h2>
             <div class="gallery-grid">
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPhotoModal('photo/1.jpg', '첫 웃음')">
                     <img src="photo/1.jpg" alt="예원이 사진 1" class="gallery-photo">
                     <div class="gallery-caption">첫 웃음</div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPhotoModal('photo/2.jpg', '달콤한 잠')">
                     <img src="photo/2.jpg" alt="예원이 사진 2" class="gallery-photo">
                     <div class="gallery-caption">달콤한 잠</div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPhotoModal('photo/3.jpg', '첫 걸음')">
                     <img src="photo/3.jpg" alt="예원이 사진 3" class="gallery-photo">
                     <div class="gallery-caption">첫 걸음</div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPhotoModal('photo/4.jpg', '엄마와 함께')">
                     <img src="photo/4.jpg" alt="예원이 사진 4" class="gallery-photo">
                     <div class="gallery-caption">엄마와 함께</div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPhotoModal('photo/5.jpg', '아빠와 함께')">
                     <img src="photo/5.jpg" alt="예원이 사진 5" class="gallery-photo">
                     <div class="gallery-caption">아빠와 함께</div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPhotoModal('photo/6.jpg', '첫 생일')">
                     <img src="photo/6.jpg" alt="예원이 사진 6" class="gallery-photo">
                     <div class="gallery-caption">첫 생일</div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPhotoModal('photo/7.jpg', '장난감과 함께')">
                     <img src="photo/7.jpg" alt="예원이 사진 7" class="gallery-photo">
                     <div class="gallery-caption">장난감과 함께</div>
                 </div>
-                <div class="gallery-item">
+                <div class="gallery-item" onclick="openPhotoModal('photo/8.jpg', '예쁜 옷 입고')">
                     <img src="photo/8.jpg" alt="예원이 사진 8" class="gallery-photo">
                     <div class="gallery-caption">예쁜 옷 입고</div>
                 </div>
-                <div class="gallery-item">
-                    <img src="photo/9.jpg" alt="예원이 사진 9" class="gallery-photo">
+                <div class="gallery-item" onclick="openPhotoModal('photo/9.JPG', '사랑스러운 순간')">
+                    <img src="photo/9.JPG" alt="예원이 사진 9" class="gallery-photo">
                     <div class="gallery-caption">사랑스러운 순간</div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Photo Modal -->
+    <div id="photoModal" class="photo-modal">
+        <div class="modal-overlay" onclick="closePhotoModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closePhotoModal()">&times;</button>
+            <img id="modalImage" src="" alt="" class="modal-image">
+            <div class="modal-caption" id="modalCaption"></div>
+        </div>
+    </div>
 
     <!-- Location Section -->
     <section class="location-section">
@@ -109,14 +121,14 @@
             <div class="location-content">
                 <div class="location-info">
                     <div class="venue-details">
-                        <h3>광교 우루루</h3>
+                        <h3>우루루 광교 상현점</h3>
                         <p class="address">경기도 용인시 수지구 광교중앙로295번길 3 1층 117~130호</p>
                         <p class="phone">📞 031-123-4567</p>
                     </div>
                     <div class="transport-info">
                         <div class="transport-item">
                             <h4>🚇 지하철</h4>
-                            <p>분당선 광교중앙역 1번 출구 도보 5분</p>
+                            <p>분당선 광교중앙역 3번 츨구에서 128m 직전</p>
                         </div>
                         <div class="transport-item">
                             <h4>🚌 버스</h4>
@@ -130,11 +142,6 @@
                 </div>
                 <div class="map-container">
                     <div id="map" class="map"></div>
-                    <div class="map-buttons">
-                        <button class="map-btn" onclick="openNaverMap()">네이버 지도</button>
-                        <button class="map-btn" onclick="openKakaoMap()">카카오맵</button>
-                        <button class="map-btn" onclick="openGoogleMap()">구글 지도</button>
-                    </div>
                 </div>
             </div>
         </div>

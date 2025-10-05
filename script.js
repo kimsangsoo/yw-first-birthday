@@ -1,17 +1,19 @@
-// Mobile Navigation Toggle
+// Mobile Navigation Toggle (if elements exist)
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
-    hamburger.classList.remove('active');
-    navMenu.classList.remove('active');
-}));
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+    }));
+}
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -27,15 +29,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar background change on scroll
+// Navbar background change on scroll (if navbar exists)
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+    if (navbar) {
+        if (window.scrollY > 50) {
+            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+        } else {
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        }
     }
 });
 
@@ -54,12 +58,14 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe elements for animation
+// Observe elements for animation (if they exist)
 document.querySelectorAll('.greeting-text, .timeline-item, .gallery-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    observer.observe(el);
+    if (el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        observer.observe(el);
+    }
 });
 
 
@@ -77,84 +83,29 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Map functionality
-let map;
-
-// Initialize map when page loads
+// Map functionality with iframe
 document.addEventListener('DOMContentLoaded', function () {
-    // 광교 우루루 좌표 (용인시 수지구 광교 U-TOWER)
-    const venueLat = 37.291;
-    const venueLng = 127.069;
-    const venueAddress = '경기도 용인시 수지구 광교중앙로295번길 3 1층 117~130호';
+    const mapElement = document.getElementById('map');
+    if (mapElement) {
+        const venueAddress = '경기도 용인시 수지구 광교중앙로295번길 3 1층 117~130호';
+        const venueName = '우루루 광교 상현점';
 
-    // Check if Kakao Maps API is loaded
-    if (typeof kakao !== 'undefined' && kakao.maps) {
-        // Create map container
-        const mapContainer = document.getElementById('map');
-        const mapOption = {
-            center: new kakao.maps.LatLng(venueLat, venueLng),
-            level: 3
-        };
-
-        // Create map
-        map = new kakao.maps.Map(mapContainer, mapOption);
-
-        // Create marker
-        const markerPosition = new kakao.maps.LatLng(venueLat, venueLng);
-        const marker = new kakao.maps.Marker({
-            position: markerPosition
-        });
-        marker.setMap(map);
-
-        // Create info window
-        const infoWindow = new kakao.maps.InfoWindow({
-            content: `<div style="padding: 10px; text-align: center; font-family: 'Hi Melody', cursive;">
-                        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px;">광교 우루루</div>
-                        <div style="font-size: 12px; color: #666;">${venueAddress}</div>
-                      </div>`
-        });
-
-        // Show info window when marker is clicked
-        kakao.maps.event.addListener(marker, 'click', function () {
-            infoWindow.open(map, marker);
-        });
-
-        // Show info window by default
-        infoWindow.open(map, marker);
-    } else {
-        // Fallback if Kakao Maps API is not loaded
-        const mapElement = document.getElementById('map');
-        if (mapElement) {
-            mapElement.innerHTML = `
-                <div style="text-align: center; padding: 2rem;">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🗺️</div>
-                    <div style="font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: bold;">광교 우루루</div>
-                    <div style="font-size: 1rem; color: #666;">${venueAddress}</div>
-                    <div style="font-size: 0.9rem; color: #888; margin-top: 1rem;">지도 버튼을 클릭하여 상세 지도를 확인하세요</div>
-                </div>
-            `;
-        }
+        // Create Google Maps iframe (clean, no overlay)
+        const searchQuery = encodeURIComponent(venueAddress);
+        mapElement.innerHTML = `
+            <iframe 
+                src="https://www.google.com/maps?q=${searchQuery}&output=embed"
+                width="100%" 
+                height="100%" 
+                style="border:0; border-radius: 15px;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        `;
     }
 });
 
-// Map button functions
-function openNaverMap() {
-    const address = encodeURIComponent('경기도 용인시 수지구 광교중앙로295번길 3 1층 117~130호');
-    const url = `https://map.naver.com/v5/search/${address}`;
-    window.open(url, '_blank');
-}
-
-function openKakaoMap() {
-    const address = encodeURIComponent('경기도 용인시 수지구 광교중앙로295번길 3 1층 117~130호');
-    const url = `https://map.kakao.com/link/search/${address}`;
-    window.open(url, '_blank');
-}
-
-function openGoogleMap() {
-    const address = encodeURIComponent('경기도 용인시 수지구 광교중앙로295번길 3 1층 117~130호');
-    const url = `https://www.google.com/maps/search/?api=1&query=${address}`;
-    window.open(url, '_blank');
-}
 
 // Add typing effect to main title
 function typeWriter(element, text, speed = 100) {
@@ -220,3 +171,46 @@ function createScrollProgress() {
 
 // Initialize scroll progress
 createScrollProgress();
+
+// Photo Modal functionality
+function openPhotoModal(imageSrc, caption) {
+    const modal = document.getElementById('photoModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalCaption = document.getElementById('modalCaption');
+
+    modalImage.src = imageSrc;
+    modalCaption.textContent = caption;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+    // Add animation class
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+}
+
+function closePhotoModal() {
+    const modal = document.getElementById('photoModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto'; // Restore scrolling
+
+    // Hide modal after animation
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closePhotoModal();
+    }
+});
+
+// Close modal when clicking outside the image
+document.addEventListener('click', function (event) {
+    const modal = document.getElementById('photoModal');
+    if (event.target === modal) {
+        closePhotoModal();
+    }
+});
