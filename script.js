@@ -219,7 +219,7 @@ function createScrollProgress() {
 createScrollProgress();
 
 // Background Music Control
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const musicToggle = document.getElementById('musicToggle');
     const backgroundMusic = document.getElementById('backgroundMusic');
     let isPlaying = false;
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set initial volume
         backgroundMusic.volume = 0.3;
 
-        musicToggle.addEventListener('click', function() {
+        musicToggle.addEventListener('click', function () {
             if (isPlaying) {
                 backgroundMusic.pause();
                 musicToggle.classList.remove('playing');
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Auto-play on first user interaction
         let hasInteracted = false;
-        document.addEventListener('click', function() {
+        document.addEventListener('click', function () {
             if (!hasInteracted && !isPlaying) {
                 hasInteracted = true;
                 backgroundMusic.play().then(() => {
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, { once: true });
 
         // Handle music end
-        backgroundMusic.addEventListener('ended', function() {
+        backgroundMusic.addEventListener('ended', function () {
             musicToggle.classList.remove('playing');
             musicToggle.innerHTML = '<i class="fas fa-music"></i>';
             isPlaying = false;
@@ -282,7 +282,7 @@ function openPhotoModal(imageSrc, caption) {
     if (modal && modalImage && modalCaption) {
         // Save current scroll position
         scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-        
+
         // Preload image to ensure it's ready
         const img = new Image();
         img.onload = function () {
