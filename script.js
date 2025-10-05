@@ -400,7 +400,7 @@ function openPhotoModal(imageSrc, caption) {
 
     // 모달을 body의 최상위로 이동
     document.body.appendChild(modal);
-    
+
     // 모달 강제 표시 - 화면 중앙 고정
     modal.style.display = 'flex';
     modal.style.opacity = '1';
@@ -505,7 +505,7 @@ function closePhotoModal() {
     modal.style.visibility = 'hidden';
     modal.style.zIndex = '';
     modal.classList.remove('show');
-    
+
     // 모달을 원래 위치로 복원 (HTML에서 정의된 위치)
     const originalLocation = document.querySelector('section.photo-gallery');
     if (originalLocation && originalLocation.nextSibling) {

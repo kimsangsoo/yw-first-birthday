@@ -12,11 +12,12 @@ html, body {
     overflow-x: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    -webkit-perspective: 1000;
+    /* Removed 3D transforms/perspective that break position: fixed stacking/viewport */
+    /* transform: translateZ(0); */
+    /* backface-visibility: hidden; */
+    /* -webkit-transform: translateZ(0); */
+    /* -webkit-backface-visibility: hidden; */
+    /* -webkit-perspective: 1000; */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -741,12 +742,13 @@ body.modal-open .extended-gallery {
 @media (max-width: 768px) {
     html, body {
         -webkit-overflow-scrolling: touch;
-        -webkit-transform: translateZ(0);
-        -webkit-backface-visibility: hidden;
-        -webkit-perspective: 1000;
-        transform: translate3d(0, 0, 0);
-        backface-visibility: hidden;
-        perspective: 1000px;
+        /* Removed mobile 3D transforms/perspective to preserve fixed positioning */
+        /* -webkit-transform: translateZ(0); */
+        /* -webkit-backface-visibility: hidden; */
+        /* -webkit-perspective: 1000; */
+        /* transform: translate3d(0, 0, 0); */
+        /* backface-visibility: hidden; */
+        /* perspective: 1000px; */
         overscroll-behavior: none;
         -webkit-overscroll-behavior: none;
     }
