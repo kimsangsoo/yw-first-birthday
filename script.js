@@ -229,8 +229,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!mainGallery || !extendedGallery || !nextBatchBtn) return;
 
-    // 극도로 축소된 핵심 사진만 (브라우저 멈춤 방지)
+    // 확장된 사진 갤러리 (1-9장, 10-18장 방식)
     const allPhotos = [
+        // 첫 번째 배치 (1-9장)
         { src: 'photo/1.jpg', caption: '뫄! 들어와' },
         { src: 'photo/2.jpg', caption: '엄마!! 어디갔어' },
         { src: 'photo/3.jpg', caption: '한푼줍쇼' },
@@ -239,8 +240,29 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/6.jpg', caption: '사우나 가자' },
         { src: 'photo/7.jpg', caption: '애미야 불꺼라' },
         { src: 'photo/8.jpg', caption: '용용이 탄생' },
-        { src: 'photo/9.JPG', caption: '용용이' }
-        // 확장 갤러리 완전 제거 (55개 → 9개로 극도 축소)
+        { src: 'photo/9.JPG', caption: '용용이' },
+        
+        // 두 번째 배치 (10-18장)
+        { src: 'photo/10.jpg', caption: '예원이의 일상' },
+        { src: 'photo/11.jpg', caption: '놀이 시간' },
+        { src: 'photo/12.jpg', caption: '웃는 순간' },
+        { src: 'photo/13.jpg', caption: '귀여운 모습' },
+        { src: 'photo/14.jpg', caption: '성장 기록' },
+        { src: 'photo/15.jpg', caption: '소중한 순간' },
+        { src: 'photo/16.jpg', caption: '가족과 함께' },
+        { src: 'photo/17.jpg', caption: '첫 걸음마' },
+        { src: 'photo/18.jpg', caption: '생일 준비' },
+        
+        // 세 번째 배치 (19-27장)
+        { src: 'photo/19.jpg', caption: '예원이의 모험' },
+        { src: 'photo/20.jpg', caption: '장난감과 함께' },
+        { src: 'photo/21.jpg', caption: '잠자는 모습' },
+        { src: 'photo/22.jpg', caption: '먹는 모습' },
+        { src: 'photo/23.jpg', caption: '놀고 있는 순간' },
+        { src: 'photo/24.jpg', caption: '웃음이 가득' },
+        { src: 'photo/25.jpg', caption: '성장의 흔적' },
+        { src: 'photo/26.jpg', caption: '소중한 추억' },
+        { src: 'photo/27.jpg', caption: '사랑스러운 모습' }
     ];
 
     let currentBatch = 0;
@@ -309,11 +331,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Update button text
         const remaining = allPhotos.length - endIndex;
+        const currentBatchNum = Math.floor(startIndex / BATCH_SIZE) + 1;
+        const totalBatches = Math.ceil(allPhotos.length / BATCH_SIZE);
+        
         if (remaining > 0) {
-            toggleText.textContent = `다른 사진 보기 (${remaining}장 남음)`;
+            const nextBatchNum = currentBatchNum + 1;
+            toggleText.textContent = `${nextBatchNum}번째 사진 보기 (${remaining}장 남음)`;
             toggleIcon.className = 'fas fa-chevron-right toggle-icon';
         } else {
-            toggleText.textContent = '첫 번째 사진으로';
+            toggleText.textContent = '1번째 사진으로 돌아가기';
             toggleIcon.className = 'fas fa-chevron-left toggle-icon';
         }
 
