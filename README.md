@@ -23,17 +23,39 @@
 
 이 프로젝트는 GitHub Pages를 통해 자동으로 배포됩니다.
 
-### 배포 방법
+### 자동 배포 설정 (GitHub Actions 사용)
 
-1. 이 저장소를 GitHub에 푸시
-2. Settings > Pages에서 소스를 'Deploy from a branch'로 설정
-3. Branch를 'main'으로 선택
-4. Save 버튼 클릭
+1. **GitHub 저장소에 푸시**
+   ```bash
+   git add .
+   git commit -m "feat: GitHub Pages 배포 설정"
+   git push origin main
+   ```
+
+2. **GitHub 저장소 설정**
+   - GitHub 저장소 → Settings → Pages
+   - Source: "GitHub Actions" 선택
+   - 자동으로 배포 시작
+
+### 수동 배포 설정 (대안)
+
+1. **GitHub 저장소 설정**
+   - GitHub 저장소 → Settings → Pages
+   - Source: "Deploy from a branch" 선택
+   - Branch: "main" 선택
+   - Folder: "/ (root)" 선택
+   - Save 버튼 클릭
 
 ### 접속 URL
 
 배포 완료 후 다음 URL로 접속 가능합니다:
-`https://[사용자명].github.io/yw-first-birthday`
+`https://kimsangsoo.github.io/yw-first-birthday`
+
+### 배포 상태 확인
+
+- GitHub 저장소 → Actions 탭에서 배포 상태 확인
+- 초록색 체크마크 = 배포 성공
+- 빨간색 X = 배포 실패 (로그 확인 필요)
 
 ## 🛠️ 커스터마이징
 
