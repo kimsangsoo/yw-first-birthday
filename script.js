@@ -237,6 +237,13 @@ document.addEventListener('DOMContentLoaded', function () {
             let loadedCount = 0;
             const totalImages = images.length;
 
+            if (totalImages === 0) {
+                isLoaded = true;
+                toggleText.textContent = '사진 접기';
+                toggleIcon.className = 'fas fa-chevron-up toggle-icon';
+                return;
+            }
+
             // Show loading indicator
             toggleText.textContent = '사진 로딩 중...';
             toggleIcon.className = 'fas fa-spinner fa-spin toggle-icon';
@@ -244,28 +251,37 @@ document.addEventListener('DOMContentLoaded', function () {
             images.forEach((img, index) => {
                 // Load images in batches to prevent browser freeze
                 setTimeout(() => {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
 
-                    img.onload = function () {
+                        img.onload = function () {
+                            loadedCount++;
+                            if (loadedCount === totalImages) {
+                                isLoaded = true;
+                                toggleText.textContent = '사진 접기';
+                                toggleIcon.className = 'fas fa-chevron-up toggle-icon';
+                            }
+                        };
+
+                        img.onerror = function () {
+                            console.warn('Failed to load image:', img.src);
+                            loadedCount++;
+                            if (loadedCount === totalImages) {
+                                isLoaded = true;
+                                toggleText.textContent = '사진 접기';
+                                toggleIcon.className = 'fas fa-chevron-up toggle-icon';
+                            }
+                        };
+                    } else {
                         loadedCount++;
                         if (loadedCount === totalImages) {
                             isLoaded = true;
                             toggleText.textContent = '사진 접기';
                             toggleIcon.className = 'fas fa-chevron-up toggle-icon';
                         }
-                    };
-
-                    img.onerror = function () {
-                        console.warn('Failed to load image:', img.dataset.src);
-                        loadedCount++;
-                        if (loadedCount === totalImages) {
-                            isLoaded = true;
-                            toggleText.textContent = '사진 접기';
-                            toggleIcon.className = 'fas fa-chevron-up toggle-icon';
-                        }
-                    };
-                }, index * 50); // 50ms delay between each image load
+                    }
+                }, index * 100); // 100ms delay between each image load
             });
         }
 
@@ -324,62 +340,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Auto-play on page load with multiple attempts
-        let retryCount = 0;
-        const maxRetries = 10;
-
+        // Simple auto-play attempt (no retry spam)
         function tryAutoPlay() {
-            if (isPlaying) return; // Already playing
-
-            console.log('Attempting to play music, attempt:', retryCount + 1);
-
+            if (isPlaying) return;
+            
             backgroundMusic.play().then(() => {
                 musicToggle.classList.add('playing');
                 musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
                 isPlaying = true;
                 console.log('Music started successfully!');
-                retryCount = 0; // Reset retry count on success
             }).catch(error => {
-                console.log('Auto-play failed:', error);
-                retryCount++;
-
-                if (retryCount < maxRetries) {
-                    console.log('Retrying in 500ms...');
-                    setTimeout(tryAutoPlay, 500);
-                } else {
-                    console.log('Max retries reached, giving up auto-play');
-                }
+                console.log('Auto-play blocked by browser policy. User interaction required.');
             });
         }
 
-        // Try auto-play on multiple events
+        // Try auto-play once on page load
         window.addEventListener('load', function () {
             setTimeout(tryAutoPlay, 1000);
         });
 
-        // Also try on DOMContentLoaded
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(tryAutoPlay, 2000);
-        });
-
-        // Try on user interaction (click, touch, scroll) - without once: true
+        // Try on first user interaction
         function handleUserInteraction() {
             if (!isPlaying) {
-                console.log('User interaction detected, trying to play music...');
                 tryAutoPlay();
             }
         }
 
-        // Add multiple event listeners without once: true
-        document.addEventListener('click', handleUserInteraction);
-        document.addEventListener('touchstart', handleUserInteraction);
-        document.addEventListener('touchend', handleUserInteraction);
-        document.addEventListener('scroll', handleUserInteraction);
-        document.addEventListener('keydown', handleUserInteraction);
-        document.addEventListener('mousemove', handleUserInteraction);
-
-        // Also try on window focus
-        window.addEventListener('focus', handleUserInteraction);
+        document.addEventListener('click', handleUserInteraction, { once: true });
+        document.addEventListener('touchstart', handleUserInteraction, { once: true });
+        document.addEventListener('scroll', handleUserInteraction, { once: true });
 
         // Handle music end
         backgroundMusic.addEventListener('ended', function () {
