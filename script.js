@@ -218,6 +218,36 @@ function createScrollProgress() {
 // Initialize scroll progress
 createScrollProgress();
 
+// Gallery Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const galleryToggle = document.getElementById('galleryToggle');
+    const extendedGallery = document.getElementById('extendedGallery');
+    const toggleText = document.querySelector('.toggle-text');
+    const toggleIcon = document.querySelector('.toggle-icon');
+    
+    if (galleryToggle && extendedGallery) {
+        let isExpanded = false;
+        
+        galleryToggle.addEventListener('click', function() {
+            if (isExpanded) {
+                // Collapse
+                extendedGallery.style.display = 'none';
+                toggleText.textContent = '더 많은 사진 보기';
+                toggleIcon.className = 'fas fa-chevron-down toggle-icon';
+                galleryToggle.classList.remove('expanded');
+                isExpanded = false;
+            } else {
+                // Expand
+                extendedGallery.style.display = 'grid';
+                toggleText.textContent = '사진 접기';
+                toggleIcon.className = 'fas fa-chevron-up toggle-icon';
+                galleryToggle.classList.add('expanded');
+                isExpanded = true;
+            }
+        });
+    }
+});
+
 // Background Music Control
 document.addEventListener('DOMContentLoaded', function () {
     const musicToggle = document.getElementById('musicToggle');
