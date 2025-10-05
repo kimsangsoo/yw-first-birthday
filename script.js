@@ -410,22 +410,22 @@ function openPhotoModal(imageSrc, caption) {
     try {
         // Save scroll position
         scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-        
+
         // Set content
         modalImage.src = imageSrc;
         modalCaption.textContent = caption;
-        
+
         // Show modal
         modal.style.display = 'flex';
-        
+
         // Prevent background scroll
         document.body.style.overflow = 'hidden';
-        
+
         // Add active class after a short delay
         setTimeout(() => {
             modal.classList.add('active');
         }, 50);
-        
+
     } catch (error) {
         console.error('Error opening modal:', error);
     }
@@ -434,24 +434,24 @@ function openPhotoModal(imageSrc, caption) {
 function closePhotoModal() {
     const modal = document.getElementById('photoModal');
     if (!modal) return;
-    
+
     try {
         // Remove active class
         modal.classList.remove('active');
-        
+
         // Hide modal after animation
         setTimeout(() => {
             modal.style.display = 'none';
         }, 300);
-        
+
         // Restore scrolling
         document.body.style.overflow = 'auto';
-        
+
         // Restore scroll position
         if (scrollPosition !== undefined) {
             window.scrollTo(0, scrollPosition);
         }
-        
+
     } catch (error) {
         console.error('Error closing modal:', error);
     }
