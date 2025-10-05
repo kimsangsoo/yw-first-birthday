@@ -360,16 +360,16 @@ document.addEventListener('DOMContentLoaded', function () {
 let isModalOpen = false;
 let isOpeningModal = false;
 function openPhotoModal(imageSrc, caption) {
-    // 극도로 단순화된 모달 (브라우저 멈춤 방지)
+    // 최적화된 이미지용 안전한 모달
     if (isModalOpen || !imageSrc) return;
-
+    
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
 
     if (!modal || !modalImage || !modalCaption) return;
 
-    // 즉시 설정 (복잡한 로직 제거)
+    // 최적화된 이미지로 안전하게 모달 열기
     modalImage.src = imageSrc;
     modalCaption.textContent = caption || '';
     modal.style.display = 'flex';
@@ -378,9 +378,9 @@ function openPhotoModal(imageSrc, caption) {
 }
 
 function closePhotoModal() {
-    // 극도로 단순화된 닫기 (브라우저 멈춤 방지)
+    // 최적화된 이미지용 안전한 닫기
     if (!isModalOpen) return;
-
+    
     const modal = document.getElementById('photoModal');
     if (modal) {
         modal.style.display = 'none';
@@ -410,14 +410,39 @@ document.addEventListener('DOMContentLoaded', function () {
             el.removeAttribute('onclick');
         });
 
-        // 모달 완전 제거 (브라우저 멈춤 방지)
+        // 최적화된 이미지용 모달 (안전한 클릭)
         galleryContainer.addEventListener('click', function (e) {
-            // 클릭 이벤트 무시 (모달 사용 안함)
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
+            if (isModalOpen) return;
+            const galleryItem = e.target.closest('.gallery-item');
+            if (!galleryItem) return;
+
+            const img = galleryItem.querySelector('img');
+            const caption = galleryItem.querySelector('.gallery-caption');
+
+            if (!img || !img.src) return;
+
+            // 최적화된 이미지로 안전한 모달 열기
+            openPhotoModal(img.src, caption ? caption.textContent : '');
         });
     }
 
-    // 모달 관련 코드 완전 제거 (브라우저 멈춤 방지)
+    // 모달 이벤트 바인딩 (최적화된 이미지용)
+    const modal = document.getElementById('photoModal');
+    if (modal) {
+        const overlay = modal.querySelector('.modal-overlay');
+        const closeBtn = modal.querySelector('.modal-close');
+
+        if (overlay) {
+            overlay.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closePhotoModal();
+            });
+        }
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closePhotoModal();
+            });
+        }
+    }
 });
