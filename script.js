@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/44.jpg', caption: '사랑이 가득' },
         { src: 'photo/45.jpg', caption: '행복한 아이' },
         { src: 'photo/55.jpg', caption: '첫 생일' },
-        { src: 'photo/56.jpg', caption: '예원이의 특별한 날' }
+        { src: 'photo/56.jpg', caption: '예원이의 특별한 날' },
 
         // 여섯 번째 배치 (46-54장)
         { src: 'photo/46.jpg', caption: '첫 말' },
