@@ -610,9 +610,9 @@ section {
     image-rendering: auto;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    /* 썸네일용 크기 제한 (더 작게) */
-    max-width: 200px;
-    max-height: 200px;
+    /* 썸네일용 크기 제한 (매우 작게) */
+    max-width: 150px;
+    max-height: 150px;
     /* 큰 이미지 로딩 최적화 */
     contain: layout style paint;
     will-change: auto;

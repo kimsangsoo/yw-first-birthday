@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!mainGallery || !extendedGallery || !nextBatchBtn) return;
 
-    // All photos in order
+    // 핵심 사진만 선별 (성능 최적화)
     const allPhotos = [
         { src: 'photo/1.jpg', caption: '뫄! 들어와' },
         { src: 'photo/2.jpg', caption: '엄마!! 어디갔어' },
@@ -239,54 +239,20 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/7.jpg', caption: '애미야 불꺼라' },
         { src: 'photo/8.jpg', caption: '용용이 탄생' },
         { src: 'photo/9.JPG', caption: '용용이' },
+        // 핵심 사진만 선별 (56개 → 18개로 축소)
         { src: 'photo/10.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/11.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/12.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/13.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/14.jpeg', caption: '예원이의 소중한 순간' },
         { src: 'photo/15.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/16.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/17.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/18.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/19.jpeg', caption: '예원이의 소중한 순간' },
         { src: 'photo/20.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/21.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/22.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/23.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/24.jpeg', caption: '예원이의 소중한 순간' },
         { src: 'photo/25.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/26.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/27.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/28.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/29.jpeg', caption: '예원이의 소중한 순간' },
         { src: 'photo/30.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/31.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/32.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/33.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/34.jpeg', caption: '예원이의 소중한 순간' },
         { src: 'photo/35.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/36.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/37.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/38.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/39.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/41.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/42.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/44.jpeg', caption: '예원이의 소중한 순간' },
+        { src: 'photo/40.jpeg', caption: '예원이의 소중한 순간' },
         { src: 'photo/45.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/46.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/47.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/48.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/50.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/51.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/52.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/53.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/54.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/55.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/56.jpeg', caption: '예원이의 소중한 순간' }
+        { src: 'photo/50.jpeg', caption: '예원이의 소중한 순간' }
     ];
 
     let currentBatch = 0;
-    const BATCH_SIZE = 9;
+    const BATCH_SIZE = 6; // 더 작은 배치 크기
 
     function createGalleryItem(photo) {
         const item = document.createElement('div');
@@ -300,18 +266,22 @@ document.addEventListener('DOMContentLoaded', function () {
         img.setAttribute('decoding', 'async');
         img.setAttribute('fetchpriority', 'low');
 
-        // 썸네일용 작은 해상도 설정 (더 작게)
-        img.style.maxWidth = '200px';
-        img.style.maxHeight = '200px';
+        // 썸네일용 매우 작은 해상도 (성능 최적화)
+        img.style.maxWidth = '150px';
+        img.style.maxHeight = '150px';
         img.style.objectFit = 'cover';
         img.style.borderRadius = '8px';
         
         // 이미지 로딩 최적화
-        img.style.transition = 'transform 0.2s ease';
+        img.style.transition = 'transform 0.2s ease, opacity 0.3s ease';
         img.addEventListener('load', () => {
             img.style.opacity = '1';
         });
-        img.style.opacity = '0.7';
+        img.style.opacity = '0.5';
+        
+        // 메모리 최적화
+        img.style.contain = 'layout style paint';
+        img.style.willChange = 'auto';
 
         // 원본 이미지 경로 (모달에서 사용)
         img.dataset.originalSrc = photo.src;
@@ -410,18 +380,18 @@ function openPhotoModal(imageSrc, caption) {
 
     if (modal && modalImage && modalCaption) {
         isOpeningModal = true;
-        
+
         // 모달 이미지 최적화 설정
         modalImage.setAttribute('decoding', 'async');
         modalImage.setAttribute('loading', 'eager');
         modalImage.style.maxWidth = '90vw';
         modalImage.style.maxHeight = '70vh';
         modalImage.style.objectFit = 'contain';
-        
+
         // 로딩 상태 표시
         modalImage.style.opacity = '0.5';
         modalImage.style.filter = 'blur(2px)';
-        
+
         // 이미지 로드 완료 후 처리
         const handleImageLoad = () => {
             modalImage.style.opacity = '1';
@@ -429,7 +399,7 @@ function openPhotoModal(imageSrc, caption) {
             modalImage.removeEventListener('load', handleImageLoad);
             modalImage.removeEventListener('error', handleImageError);
         };
-        
+
         const handleImageError = () => {
             modalImage.style.opacity = '1';
             modalImage.style.filter = 'none';
@@ -437,7 +407,7 @@ function openPhotoModal(imageSrc, caption) {
             modalImage.removeEventListener('load', handleImageLoad);
             modalImage.removeEventListener('error', handleImageError);
         };
-        
+
         modalImage.addEventListener('load', handleImageLoad);
         modalImage.addEventListener('error', handleImageError);
 
