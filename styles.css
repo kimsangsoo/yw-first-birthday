@@ -1026,5 +1026,28 @@ section {
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    /* iOS Safari specific fixes */
+    .gallery-item img {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    .photo-modal {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .modal-content {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
     }
 }

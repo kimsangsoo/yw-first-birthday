@@ -172,29 +172,42 @@ function createScrollProgress() {
 // Initialize scroll progress
 createScrollProgress();
 
-// Photo Modal functionality
+// Photo Modal functionality (iOS Safari optimized)
 function openPhotoModal(imageSrc, caption) {
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
 
     if (modal && modalImage && modalCaption) {
-        modalImage.src = imageSrc;
-        modalCaption.textContent = caption;
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        // Preload image to ensure it's ready
+        const img = new Image();
+        img.onload = function () {
+            modalImage.src = imageSrc;
+            modalCaption.textContent = caption;
+            modal.style.display = 'flex';
 
-        // Add animation class
-        setTimeout(() => {
-            modal.classList.add('active');
-        }, 10);
+            // Prevent background scrolling on iOS
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+
+            // Add animation class
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        };
+        img.src = imageSrc;
     }
 }
 
 function closePhotoModal() {
     const modal = document.getElementById('photoModal');
     modal.classList.remove('active');
-    document.body.style.overflow = 'auto'; // Restore scrolling
+
+    // Restore scrolling on iOS
+    document.body.style.overflow = 'auto';
+    document.body.style.position = 'static';
+    document.body.style.width = 'auto';
 
     // Hide modal after animation
     setTimeout(() => {
@@ -217,22 +230,51 @@ document.addEventListener('click', function (event) {
     }
 });
 
-// Mobile touch events for gallery items
+// Mobile touch events for gallery items (iOS Safari optimized)
 document.addEventListener('DOMContentLoaded', function () {
     const galleryItems = document.querySelectorAll('.gallery-item');
     galleryItems.forEach(item => {
-        // Add touch event for mobile
+        let touchStartTime = 0;
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        // Touch start
         item.addEventListener('touchstart', function (e) {
-            e.preventDefault();
+            touchStartTime = Date.now();
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+        }, { passive: true });
+
+        // Touch end
+        item.addEventListener('touchend', function (e) {
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+
+            // Only trigger if touch was quick (not a scroll)
+            if (touchDuration < 300) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const img = this.querySelector('img');
+                const caption = this.querySelector('.gallery-caption');
+                if (img && caption) {
+                    // Small delay to ensure touch events are processed
+                    setTimeout(() => {
+                        openPhotoModal(img.src, caption.textContent);
+                    }, 50);
+                }
+            }
         }, { passive: false });
 
-        item.addEventListener('touchend', function (e) {
+        // Also keep click event for desktop
+        item.addEventListener('click', function (e) {
             e.preventDefault();
             const img = this.querySelector('img');
             const caption = this.querySelector('.gallery-caption');
             if (img && caption) {
                 openPhotoModal(img.src, caption.textContent);
             }
-        }, { passive: false });
+        });
     });
 });
