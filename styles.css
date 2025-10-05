@@ -610,12 +610,13 @@ section {
     image-rendering: auto;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    /* 썸네일용 크기 제한 (매우 작게) */
-    max-width: 150px;
-    max-height: 150px;
-    /* 큰 이미지 로딩 최적화 */
-    contain: layout style paint;
+    /* 썸네일용 크기 제한 (극도로 작게) */
+    max-width: 100px;
+    max-height: 100px;
+    /* 브라우저 멈춤 방지 최적화 */
+    contain: layout style paint size;
     will-change: auto;
+    image-rendering: optimizeSpeed;
 }
 
 .gallery-item:hover .gallery-photo {

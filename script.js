@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!mainGallery || !extendedGallery || !nextBatchBtn) return;
 
-    // 핵심 사진만 선별 (성능 최적화)
+    // 극도로 축소된 핵심 사진만 (브라우저 멈춤 방지)
     const allPhotos = [
         { src: 'photo/1.jpg', caption: '뫄! 들어와' },
         { src: 'photo/2.jpg', caption: '엄마!! 어디갔어' },
@@ -238,21 +238,12 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/6.jpg', caption: '사우나 가자' },
         { src: 'photo/7.jpg', caption: '애미야 불꺼라' },
         { src: 'photo/8.jpg', caption: '용용이 탄생' },
-        { src: 'photo/9.JPG', caption: '용용이' },
-        // 핵심 사진만 선별 (56개 → 18개로 축소)
-        { src: 'photo/10.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/15.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/20.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/25.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/30.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/35.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/40.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/45.jpeg', caption: '예원이의 소중한 순간' },
-        { src: 'photo/50.jpeg', caption: '예원이의 소중한 순간' }
+        { src: 'photo/9.JPG', caption: '용용이' }
+        // 확장 갤러리 완전 제거 (55개 → 9개로 극도 축소)
     ];
 
     let currentBatch = 0;
-    const BATCH_SIZE = 6; // 더 작은 배치 크기
+    const BATCH_SIZE = 9; // 모든 사진을 한 번에 표시
 
     function createGalleryItem(photo) {
         const item = document.createElement('div');
@@ -266,22 +257,20 @@ document.addEventListener('DOMContentLoaded', function () {
         img.setAttribute('decoding', 'async');
         img.setAttribute('fetchpriority', 'low');
 
-        // 썸네일용 매우 작은 해상도 (성능 최적화)
-        img.style.maxWidth = '150px';
-        img.style.maxHeight = '150px';
+        // 극도로 작은 썸네일 (브라우저 멈춤 방지)
+        img.style.maxWidth = '100px';
+        img.style.maxHeight = '100px';
         img.style.objectFit = 'cover';
-        img.style.borderRadius = '8px';
+        img.style.borderRadius = '6px';
         
-        // 이미지 로딩 최적화
-        img.style.transition = 'transform 0.2s ease, opacity 0.3s ease';
-        img.addEventListener('load', () => {
-            img.style.opacity = '1';
-        });
-        img.style.opacity = '0.5';
+        // 최소한의 로딩 효과
+        img.style.transition = 'opacity 0.2s ease';
+        img.style.opacity = '0.8';
         
-        // 메모리 최적화
-        img.style.contain = 'layout style paint';
+        // 메모리 최적화 강화
+        img.style.contain = 'layout style paint size';
         img.style.willChange = 'auto';
+        img.style.imageRendering = 'optimizeSpeed';
 
         // 원본 이미지 경로 (모달에서 사용)
         img.dataset.originalSrc = photo.src;
