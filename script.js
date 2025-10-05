@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Simple auto-play attempt (no retry spam)
         function tryAutoPlay() {
             if (isPlaying) return;
-            
+
             backgroundMusic.play().then(() => {
                 musicToggle.classList.add('playing');
                 musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
