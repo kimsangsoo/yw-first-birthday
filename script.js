@@ -383,11 +383,32 @@ function openPhotoModal(imageSrc, caption) {
     // 최적화된 이미지로 안전하게 모달 열기
     modalImage.src = imageSrc;
     modalCaption.textContent = caption || '';
+    
+    // 모달 표시 - 여러 방법으로 확실하게
     modal.style.display = 'flex';
+    modal.style.opacity = '1';
+    modal.style.visibility = 'visible';
+    modal.classList.add('show');
+    
+    // body 스크롤 방지
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    
     isModalOpen = true;
 
     console.log('Modal opened successfully');
+    
+    // 추가 디버깅: 모달 상태 확인
+    setTimeout(() => {
+        console.log('Modal after 100ms:', {
+            display: modal.style.display,
+            opacity: modal.style.opacity,
+            visibility: modal.style.visibility,
+            classList: modal.classList.toString(),
+            computedStyle: window.getComputedStyle(modal).display
+        });
+    }, 100);
 }
 
 function closePhotoModal() {
@@ -396,8 +417,17 @@ function closePhotoModal() {
 
     const modal = document.getElementById('photoModal');
     if (modal) {
+        // 모달 숨기기 - 여러 방법으로 확실하게
         modal.style.display = 'none';
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
+        modal.classList.remove('show');
+        
+        // body 스크롤 복원
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+        
         isModalOpen = false;
     }
 }
