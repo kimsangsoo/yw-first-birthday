@@ -14,6 +14,11 @@ html, body {
     -webkit-overflow-scrolling: touch;
     transform: translateZ(0);
     backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Music Control */
@@ -102,6 +107,12 @@ body {
     overflow: visible;
     padding: 2rem 0 8rem 0;
     will-change: auto;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
 }
 
 .main-section::before {
@@ -113,8 +124,11 @@ body {
     bottom: 0;
     background: linear-gradient(135deg, rgba(253, 242, 248, 0.7) 0%, rgba(252, 231, 243, 0.6) 50%, rgba(248, 244, 255, 0.7) 100%);
     z-index: 2;
-    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
+    will-change: transform;
 }
 
 .main-content {
@@ -123,8 +137,11 @@ body {
     text-align: center;
     position: relative;
     z-index: 3;
-    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
+    will-change: transform;
 }
 
 /* Flower decorations */
@@ -682,6 +699,48 @@ section {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+    html, body {
+        -webkit-overflow-scrolling: touch;
+        -webkit-transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+        overscroll-behavior: none;
+        -webkit-overscroll-behavior: none;
+    }
+    
+    .main-section {
+        -webkit-transform: translate3d(0, 0, 0);
+        -webkit-backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+        will-change: auto;
+        contain: layout style paint;
+    }
+    
+    .main-section::before {
+        -webkit-transform: translate3d(0, 0, 0);
+        -webkit-backface-visibility: hidden;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        will-change: transform;
+    }
+    
+    .main-content {
+        -webkit-transform: translate3d(0, 0, 0);
+        -webkit-backface-visibility: hidden;
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        will-change: transform;
     }
 }
 
