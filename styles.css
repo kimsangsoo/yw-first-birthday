@@ -262,17 +262,35 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 2;
+    animation: bow 3s ease-in-out infinite;
+    transform-origin: center bottom;
+}
+
+@keyframes bow {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(-8deg) scale(0.98);
+    }
+    50% {
+        transform: rotate(-12deg) scale(0.96);
+    }
+    75% {
+        transform: rotate(-8deg) scale(0.98);
+    }
 }
 
 
 /* Event details */
 .event-details {
     margin-top: 2rem;
+    margin-bottom: 6rem;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-radius: 25px;
-    padding: 2.5rem;
+    padding: 3rem;
     box-shadow: 0 12px 40px rgba(255, 182, 193, 0.2);
     border: 2px solid rgba(255, 182, 193, 0.3);
     position: relative;
@@ -415,9 +433,10 @@ section {
 /* Photo Gallery Section */
 .photo-gallery {
     background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #f8f4ff 100%);
-    padding: 4rem 0;
+    padding: 8rem 0;
     position: relative;
     overflow: hidden;
+    margin-top: 4rem;
 }
 
 .photo-gallery::before {
@@ -445,7 +464,8 @@ section {
     font-size: 2rem;
     font-family: 'Gamja Flower', cursive;
     color: #6b7280;
-    margin-bottom: 3rem;
+    margin-top: 4rem;
+    margin-bottom: 6rem;
     background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -466,7 +486,8 @@ section {
     gap: 1rem;
     max-width: 600px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 2rem 1rem;
+    margin-top: 2rem;
 }
 
 .gallery-item {
@@ -955,18 +976,29 @@ section {
     }
     
     .photo-gallery {
-        padding: 3rem 0;
+        padding: 6rem 0;
+        margin-top: 2rem;
     }
     
     .gallery-title {
         font-size: 1.8rem;
-        margin-bottom: 2rem;
+        margin-top: 2rem;
+        margin-bottom: 4rem;
+    }
+    
+    .event-details {
+        margin-bottom: 4rem;
+        padding: 2rem;
+    }
+    
+    .gallery-grid {
+        padding: 1.5rem 0.5rem;
+        margin-top: 1rem;
     }
     
     .gallery-grid {
         gap: 0.8rem;
         max-width: 500px;
-        padding: 0 0.5rem;
     }
     
     .gallery-item {

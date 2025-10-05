@@ -45,8 +45,8 @@ window.addEventListener('scroll', () => {
 
 // Intersection Observer for animations
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: 0.3,
+    rootMargin: '0px 0px -100px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -59,12 +59,37 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements for animation (if they exist)
-document.querySelectorAll('.greeting-text, .timeline-item, .gallery-item').forEach(el => {
+document.querySelectorAll('.greeting-text, .timeline-item').forEach(el => {
     if (el) {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
         observer.observe(el);
+    }
+});
+
+// Gallery items with different observer settings
+const galleryObserverOptions = {
+    threshold: 0.8,
+    rootMargin: '0px 0px -300px 0px'
+};
+
+const galleryObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, galleryObserverOptions);
+
+// Observe gallery items separately
+document.querySelectorAll('.gallery-item').forEach(el => {
+    if (el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(50px)';
+        el.style.transition = 'opacity 1s ease, transform 1s ease';
+        galleryObserver.observe(el);
     }
 });
 
@@ -129,6 +154,27 @@ window.addEventListener('load', () => {
     if (mainTitle) {
         const originalText = mainTitle.textContent;
         typeWriter(mainTitle, originalText, 150);
+    }
+
+    // Baby photo bowing animation
+    const babyPhoto = document.querySelector('.baby-photo');
+    if (babyPhoto) {
+        // Add hover effect for more interactive bowing
+        babyPhoto.addEventListener('mouseenter', () => {
+            babyPhoto.style.animationDuration = '1s';
+        });
+
+        babyPhoto.addEventListener('mouseleave', () => {
+            babyPhoto.style.animationDuration = '3s';
+        });
+
+        // Add click effect for extra bow
+        babyPhoto.addEventListener('click', () => {
+            babyPhoto.style.animation = 'none';
+            setTimeout(() => {
+                babyPhoto.style.animation = 'bow 1s ease-in-out';
+            }, 10);
+        });
     }
 });
 
