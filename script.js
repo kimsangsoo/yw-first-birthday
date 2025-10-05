@@ -262,11 +262,11 @@ document.addEventListener('DOMContentLoaded', function () {
         img.style.maxHeight = '100px';
         img.style.objectFit = 'cover';
         img.style.borderRadius = '6px';
-        
+
         // 최소한의 로딩 효과
         img.style.transition = 'opacity 0.2s ease';
         img.style.opacity = '0.8';
-        
+
         // 메모리 최적화 강화
         img.style.contain = 'layout style paint size';
         img.style.willChange = 'auto';
@@ -360,66 +360,31 @@ document.addEventListener('DOMContentLoaded', function () {
 let isModalOpen = false;
 let isOpeningModal = false;
 function openPhotoModal(imageSrc, caption) {
-    if (isModalOpen || isOpeningModal) return; // prevent re-entrant opens
-    if (!imageSrc) return; // ignore if no image source available
-
+    // 극도로 단순화된 모달 (브라우저 멈춤 방지)
+    if (isModalOpen || !imageSrc) return;
+    
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
 
-    if (modal && modalImage && modalCaption) {
-        isOpeningModal = true;
+    if (!modal || !modalImage || !modalCaption) return;
 
-        // 모달 이미지 최적화 설정
-        modalImage.setAttribute('decoding', 'async');
-        modalImage.setAttribute('loading', 'eager');
-        modalImage.style.maxWidth = '90vw';
-        modalImage.style.maxHeight = '70vh';
-        modalImage.style.objectFit = 'contain';
-
-        // 로딩 상태 표시
-        modalImage.style.opacity = '0.5';
-        modalImage.style.filter = 'blur(2px)';
-
-        // 이미지 로드 완료 후 처리
-        const handleImageLoad = () => {
-            modalImage.style.opacity = '1';
-            modalImage.style.filter = 'none';
-            modalImage.removeEventListener('load', handleImageLoad);
-            modalImage.removeEventListener('error', handleImageError);
-        };
-
-        const handleImageError = () => {
-            modalImage.style.opacity = '1';
-            modalImage.style.filter = 'none';
-            console.warn('Failed to load image:', imageSrc);
-            modalImage.removeEventListener('load', handleImageLoad);
-            modalImage.removeEventListener('error', handleImageError);
-        };
-
-        modalImage.addEventListener('load', handleImageLoad);
-        modalImage.addEventListener('error', handleImageError);
-
-        // Defer to next frame to avoid jank on click
-        requestAnimationFrame(() => {
-            modalImage.src = imageSrc;
-            modalCaption.textContent = caption;
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('modal-open');
-            isModalOpen = true;
-            isOpeningModal = false;
-        });
-    }
+    // 즉시 설정 (복잡한 로직 제거)
+    modalImage.src = imageSrc;
+    modalCaption.textContent = caption || '';
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    isModalOpen = true;
 }
 
 function closePhotoModal() {
+    // 극도로 단순화된 닫기 (브라우저 멈춤 방지)
     if (!isModalOpen) return;
+    
     const modal = document.getElementById('photoModal');
     if (modal) {
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
         isModalOpen = false;
     }
 }
@@ -445,22 +410,19 @@ document.addEventListener('DOMContentLoaded', function () {
             el.removeAttribute('onclick');
         });
 
-        // Single delegated click handler on container
+        // 극도로 단순화된 갤러리 클릭 (브라우저 멈춤 방지)
         galleryContainer.addEventListener('click', function (e) {
             if (isModalOpen) return;
             const galleryItem = e.target.closest('.gallery-item');
-            if (!galleryItem || !galleryContainer.contains(galleryItem)) return;
+            if (!galleryItem) return;
 
             const img = galleryItem.querySelector('img');
             const caption = galleryItem.querySelector('.gallery-caption');
 
-            if (!img || !caption) return;
+            if (!img || !img.src) return;
 
-            // 원본 이미지 사용 (모달에서는 고해상도)
-            const originalSrc = img.dataset.originalSrc || img.src;
-            if (!originalSrc) return;
-
-            openPhotoModal(originalSrc, caption.textContent);
+            // 즉시 모달 열기 (복잡한 로직 제거)
+            openPhotoModal(img.src, caption ? caption.textContent : '');
         });
     }
 

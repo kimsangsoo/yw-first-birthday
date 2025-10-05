@@ -987,18 +987,14 @@ body.modal-open .extended-gallery {
 .modal-image {
     width: 100%;
     height: auto;
-    max-height: 70vh;
-    max-width: 90vw;
+    max-height: 60vh;
+    max-width: 80vw;
     object-fit: contain;
     display: block;
-    image-rendering: auto;
-    /* 모달용 고해상도 이미지 최적화 */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    will-change: transform;
-    /* 큰 이미지 로딩 최적화 */
-    transition: opacity 0.3s ease, filter 0.3s ease;
-    contain: layout style paint;
+    /* 브라우저 멈춤 방지 최적화 */
+    image-rendering: optimizeSpeed;
+    contain: layout style paint size;
+    will-change: auto;
 }
 
 .modal-caption {
