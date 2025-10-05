@@ -379,6 +379,12 @@ function openPhotoModal(imageSrc, caption) {
 
 function closePhotoModal() {
     const modal = document.getElementById('photoModal');
+    if (!modal) return;
+    
+    // Prevent multiple calls
+    if (modal.classList.contains('closing')) return;
+    modal.classList.add('closing');
+    
     modal.classList.remove('active');
 
     // Restore scrolling on iOS
@@ -393,12 +399,15 @@ function closePhotoModal() {
     // Hide modal after animation
     setTimeout(() => {
         modal.style.display = 'none';
+        modal.classList.remove('closing');
     }, 300);
 }
 
 // Close modal with Escape key
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
         closePhotoModal();
     }
 });
@@ -407,6 +416,8 @@ document.addEventListener('keydown', function (event) {
 document.addEventListener('click', function (event) {
     const modal = document.getElementById('photoModal');
     if (event.target === modal) {
+        event.preventDefault();
+        event.stopPropagation();
         closePhotoModal();
     }
 });
@@ -442,7 +453,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (img && caption) {
                     // Small delay to ensure touch events are processed
                     setTimeout(() => {
-                        openPhotoModal(img.src, caption.textContent);
+                        try {
+                            openPhotoModal(img.src, caption.textContent);
+                        } catch (error) {
+                            console.error('Error opening photo modal:', error);
+                        }
                     }, 50);
                 }
             }
@@ -451,10 +466,15 @@ document.addEventListener('DOMContentLoaded', function () {
         // Also keep click event for desktop
         item.addEventListener('click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
             const img = this.querySelector('img');
             const caption = this.querySelector('.gallery-caption');
             if (img && caption) {
-                openPhotoModal(img.src, caption.textContent);
+                try {
+                    openPhotoModal(img.src, caption.textContent);
+                } catch (error) {
+                    console.error('Error opening photo modal:', error);
+                }
             }
         });
     });
