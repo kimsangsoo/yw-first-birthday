@@ -219,12 +219,17 @@ function createScrollProgress() {
 createScrollProgress();
 
 // Photo Modal functionality (iOS Safari optimized)
+let scrollPosition = 0;
+
 function openPhotoModal(imageSrc, caption) {
     const modal = document.getElementById('photoModal');
     const modalImage = document.getElementById('modalImage');
     const modalCaption = document.getElementById('modalCaption');
 
     if (modal && modalImage && modalCaption) {
+        // Save current scroll position
+        scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+        
         // Preload image to ensure it's ready
         const img = new Image();
         img.onload = function () {
@@ -235,6 +240,7 @@ function openPhotoModal(imageSrc, caption) {
             // Prevent background scrolling on iOS
             document.body.style.overflow = 'hidden';
             document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollPosition}px`;
             document.body.style.width = '100%';
 
             // Add animation class
@@ -253,7 +259,11 @@ function closePhotoModal() {
     // Restore scrolling on iOS
     document.body.style.overflow = 'auto';
     document.body.style.position = 'static';
+    document.body.style.top = 'auto';
     document.body.style.width = 'auto';
+
+    // Restore scroll position
+    window.scrollTo(0, scrollPosition);
 
     // Hide modal after animation
     setTimeout(() => {
