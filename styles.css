@@ -285,7 +285,7 @@ body {
 /* Event details */
 .event-details {
     margin-top: 2rem;
-    margin-bottom: 8rem;
+    margin-bottom: 3rem;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
@@ -435,10 +435,10 @@ section {
 /* Photo Gallery Section */
 .photo-gallery {
     background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #f8f4ff 100%);
-    padding: 8rem 0;
+    padding: 6rem 0;
     position: relative;
     overflow: hidden;
-    margin-top: 6rem;
+    margin-top: 2rem;
     z-index: 1;
 }
 
@@ -467,8 +467,8 @@ section {
     font-size: 2rem;
     font-family: 'Gamja Flower', cursive;
     color: #6b7280;
-    margin-top: 4rem;
-    margin-bottom: 6rem;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
     background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -979,18 +979,18 @@ section {
     }
     
     .photo-gallery {
-        padding: 6rem 0;
-        margin-top: 4rem;
+        padding: 4rem 0;
+        margin-top: 1rem;
     }
     
     .gallery-title {
         font-size: 1.8rem;
-        margin-top: 3rem;
-        margin-bottom: 5rem;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
     }
     
     .event-details {
-        margin-bottom: 6rem;
+        margin-bottom: 2rem;
         padding: 2rem;
     }
     
