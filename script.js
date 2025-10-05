@@ -229,12 +229,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let isExpanded = false;
         let isLoaded = false;
 
-        // Lazy load images function
+        // Lazy load images function with batch processing
         function lazyLoadImages() {
             if (isLoaded) return;
 
             const images = extendedGallery.querySelectorAll('img[data-src]');
-            let loadedCount = 0;
             const totalImages = images.length;
 
             if (totalImages === 0) {
@@ -248,41 +247,59 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleText.textContent = '사진 로딩 중...';
             toggleIcon.className = 'fas fa-spinner fa-spin toggle-icon';
 
-            images.forEach((img, index) => {
-                // Load images in batches to prevent browser freeze
-                setTimeout(() => {
-                    if (img.dataset.src) {
+            let loadedCount = 0;
+            let currentBatch = 0;
+            const batchSize = 5; // Load 5 images at a time
+            const batchDelay = 200; // 200ms delay between batches
+
+            function loadBatch() {
+                const startIndex = currentBatch * batchSize;
+                const endIndex = Math.min(startIndex + batchSize, totalImages);
+                
+                for (let i = startIndex; i < endIndex; i++) {
+                    const img = images[i];
+                    if (img && img.dataset.src) {
                         img.src = img.dataset.src;
                         img.removeAttribute('data-src');
 
                         img.onload = function () {
                             loadedCount++;
-                            if (loadedCount === totalImages) {
-                                isLoaded = true;
-                                toggleText.textContent = '사진 접기';
-                                toggleIcon.className = 'fas fa-chevron-up toggle-icon';
-                            }
+                            updateProgress();
                         };
 
                         img.onerror = function () {
                             console.warn('Failed to load image:', img.src);
                             loadedCount++;
-                            if (loadedCount === totalImages) {
-                                isLoaded = true;
-                                toggleText.textContent = '사진 접기';
-                                toggleIcon.className = 'fas fa-chevron-up toggle-icon';
-                            }
+                            updateProgress();
                         };
                     } else {
                         loadedCount++;
-                        if (loadedCount === totalImages) {
-                            isLoaded = true;
-                            toggleText.textContent = '사진 접기';
-                            toggleIcon.className = 'fas fa-chevron-up toggle-icon';
-                        }
+                        updateProgress();
                     }
-                }, index * 100); // 100ms delay between each image load
-            });
+                }
+
+                currentBatch++;
+                
+                if (endIndex < totalImages) {
+                    // Load next batch after delay
+                    setTimeout(loadBatch, batchDelay);
+                }
+            }
+
+            function updateProgress() {
+                if (loadedCount === totalImages) {
+                    isLoaded = true;
+                    toggleText.textContent = '사진 접기';
+                    toggleIcon.className = 'fas fa-chevron-up toggle-icon';
+                } else {
+                    // Update progress
+                    const progress = Math.round((loadedCount / totalImages) * 100);
+                    toggleText.textContent = `사진 로딩 중... ${progress}%`;
+                }
+            }
+
+            // Start loading first batch
+            loadBatch();
         }
 
         galleryToggle.addEventListener('click', function () {

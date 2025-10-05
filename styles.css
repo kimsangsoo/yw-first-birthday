@@ -752,6 +752,22 @@ section {
         backface-visibility: hidden;
         will-change: transform;
     }
+    
+    /* Mobile gallery optimizations */
+    .extended-gallery {
+        contain: layout style paint;
+        will-change: auto;
+    }
+    
+    .gallery-item {
+        contain: layout style paint;
+        will-change: auto;
+    }
+    
+    .gallery-photo {
+        contain: layout style paint;
+        will-change: auto;
+    }
 }
 
 /* Event Info Section */
