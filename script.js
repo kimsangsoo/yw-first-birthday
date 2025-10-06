@@ -230,74 +230,71 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!mainGallery || !extendedGallery || !nextBatchBtn) return;
 
     // 실제 존재하는 사진 갤러리 (확인된 사진들만)
+    // 순서 변경 하면 되고 저장은 command + s 로 하고 commadn + tab 로 브러우저에서(comet) 확인
     const allPhotos = [
         // 첫 번째 배치 (1-9장)
-        { src: 'photo/1.jpg' },
-        { src: 'photo/2.jpg' },
-        { src: 'photo/3.jpg' },
-        { src: 'photo/4.jpg' },
-        { src: 'photo/5.jpg' },
-        { src: 'photo/6.jpg' },
-        { src: 'photo/7.jpg' },
-        { src: 'photo/8.jpg' },
-        { src: 'photo/9.JPG' },
-
-        // 두 번째 배치 (10-18장)
-        { src: 'photo/10.jpg' },
-        { src: 'photo/11.jpg' },
-        { src: 'photo/12.jpg' },
-        { src: 'photo/13.jpg' },
-        { src: 'photo/14.jpg' },
-        { src: 'photo/15.jpg' },
-        { src: 'photo/16.jpg' },
-        { src: 'photo/17.jpg' },
-        { src: 'photo/18.jpg' },
-
-        // 세 번째 배치 (19-27장)
-        { src: 'photo/19.jpg' },
-        { src: 'photo/20.jpg' },
-        { src: 'photo/21.jpg' },
-        { src: 'photo/22.jpg' },
-        { src: 'photo/23.jpg' },
-        { src: 'photo/24.jpg' },
-        { src: 'photo/25.jpg' },
-        { src: 'photo/26.jpg' },
-        { src: 'photo/27.jpg' },
-
-        // 네 번째 배치 (28-36장)
-        { src: 'photo/28.jpg' },
-        { src: 'photo/29.jpg' },
-        { src: 'photo/30.jpg' },
-        { src: 'photo/31.jpg' },
-        { src: 'photo/32.jpg' },
-        { src: 'photo/33.jpg' },
-        { src: 'photo/34.jpg' },
-        { src: 'photo/35.jpg' },
-        { src: 'photo/36.jpg' },
-
-        // 다섯 번째 배치 (37-45장)
         { src: 'photo/37.jpg' },
         { src: 'photo/38.jpg' },
         { src: 'photo/39.jpg' },
+        { src: 'photo/8.jpg' },
         { src: 'photo/41.jpg' },
         { src: 'photo/42.jpg' },
         { src: 'photo/44.jpg' },
-        { src: 'photo/45.jpg' },
-        { src: 'photo/55.jpg' },
-        { src: 'photo/56.jpg' },
+        { src: 'photo/1.jpg' },
+        { src: 'photo/45.JPG' },
 
-        // 여섯 번째 배치 (46-54장)
+        // 두 번째 배치 (10-18장)
         { src: 'photo/46.jpg' },
-        { src: 'photo/47.jpg' },
-        { src: 'photo/48.jpg' },
+        { src: 'photo/4.jpg' },
+        { src: 'photo/9.jpg' },
         { src: 'photo/50.jpg' },
         { src: 'photo/51.jpg' },
         { src: 'photo/52.jpg' },
         { src: 'photo/53.jpg' },
         { src: 'photo/54.jpg' },
+        { src: 'photo/55.jpg' },
 
+        // 세 번째 배치 (19-27장)
+        { src: 'photo/56.jpg' },
+        { src: 'photo/3.jpg' },
+        { src: 'photo/2.jpg' },
+        { src: 'photo/5.jpg' },
+        { src: 'photo/6.jpg' },
+        { src: 'photo/22.jpg' },
+        { src: 'photo/23.jpg' },
+        { src: 'photo/24.jpg' },
+        { src: 'photo/25.jpg' },
 
+        // 네 번째 배치 (28-36장)
+        { src: 'photo/26.jpg' },
+        { src: 'photo/27.jpg' },
+        { src: 'photo/28.jpg' },
+        { src: 'photo/19.jpg' },
+        { src: 'photo/30.jpg' },
+        { src: 'photo/31.jpg' },
+        { src: 'photo/32.jpg' },
+        { src: 'photo/7.jpg' },
+        { src: 'photo/11.jpg' },
 
+        // 다섯 번째 배치 (37-45장)
+        { src: 'photo/12.jpg' },
+        { src: 'photo/13.jpg' },
+        { src: 'photo/14.jpg' },
+        { src: 'photo/15.jpg' },
+        { src: 'photo/29.jpg' },
+        { src: 'photo/16.jpg' },
+        { src: 'photo/17.jpg' },
+        { src: 'photo/18.jpg' },
+        { src: 'photo/20.jpg' },
+
+        // 여섯 번째 배치 (46-54장)
+        { src: 'photo/21.jpg' },
+        { src: 'photo/47.jpg' },
+        { src: 'photo/48.jpg' },
+        { src: 'photo/33.jpg' },
+        { src: 'photo/34.jpg' },
+        { src: 'photo/35.jpg' },
+        { src: 'photo/36.jpg' },
     ];
 
     let currentBatch = 0;
