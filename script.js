@@ -241,12 +241,12 @@ document.addEventListener('DOMContentLoaded', function () {
         { src: 'photo/42.jpg' },
         { src: 'photo/44.jpg' },
         { src: 'photo/1.jpg' },
-        { src: 'photo/45.JPG' },
+        { src: 'photo/45.jpg' },
 
         // 두 번째 배치 (10-18장)
         { src: 'photo/46.jpg' },
         { src: 'photo/4.jpg' },
-        { src: 'photo/9.jpg' },
+        { src: 'photo/9.JPG' },
         { src: 'photo/50.jpg' },
         { src: 'photo/51.jpg' },
         { src: 'photo/52.jpg' },
